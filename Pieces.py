@@ -15,7 +15,16 @@ class Piece():
     
 class Pawn(Piece):
     def legal_moves(self, Pieces):
-        
+        moves = []
+        for square in square_list:
+            if square.getY() == self.y:
+
+                piece_in_path = square.getPiece()
+                if piece_in_path == None:
+                    moves.append(square)
+                else:
+                    if piece_in_path.get_color() != self.color:
+                        moves.append(square)
 
         return moves
 
@@ -26,14 +35,13 @@ class Bishop(Piece):
             dist_x = self.x - square.getX()
             dist_y = self.y - square.getY()
             if abs(dist_x) == abs(dist_y):
-                moves.append(square)
-            
-            piece_in_path = square.getPiece()
-            if piece_in_path == None:
-                moves.append(square)
-            else:
-                if piece_in_path.get_color() != self.color:
+
+                piece_in_path = square.getPiece()
+                if piece_in_path == None:
                     moves.append(square)
+                else:
+                    if piece_in_path.get_color() != self.color:
+                        moves.append(square)
 
         return moves
 
@@ -42,21 +50,30 @@ class Rook(Piece):
         moves = []
         for square in square_list:
             if square.getX() == self.x or square.getY() == self.y:
-                moves.append(square)
-            
-            piece_in_path = square.getPiece()
-            if piece_in_path == None:
-                moves.append(square)
-            else:
-                if piece_in_path.get_color() != self.color:
+
+                piece_in_path = square.getPiece()
+                if piece_in_path == None:
                     moves.append(square)
+                else:
+                    if piece_in_path.get_color() != self.color:
+                        moves.append(square)
 
         return moves
 
 class Knight(Piece):
     def legal_moves():
-        
+        moves = []
+        for square in square_list:
+            dist = ((self.x - square.getX())**2 + (self.y - square.getY())**2)**(1/2)
+            if dist == (5)**(1/2):
 
+                piece_in_path = square.getPiece()
+                if piece_in_path == None:
+                    moves.append(square)
+                else:
+                    if piece_in_path.get_color() != self.color:
+                        moves.append(square)
+                        
         return moves
 
 class Queen(Piece):
