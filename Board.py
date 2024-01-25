@@ -22,4 +22,11 @@ class Board():
         for square in self.state:
             if square.x == x and square.y == y:
                 return square.get_piece()
+    
+    def get_square(self, x, y):
+        for square in self.state:
+            if square.x == x and square.y == y:
+                return square
+
+    def 
 

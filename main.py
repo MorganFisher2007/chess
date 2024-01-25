@@ -1,10 +1,7 @@
-c
-
+from Board import *
 
 def main():
+    board = Board()
+    
 
-    square_list = [[0,0], []]
-
-    for i in range(8):
-
-        square_list
+main()
