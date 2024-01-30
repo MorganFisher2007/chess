@@ -8,6 +8,17 @@ class Piece():
         self.x = x
         self.y = y
         
+    def legal_move(self, dx, dy, board: Board):
+        move = board.get_square(self.x+dx, self.y+dy)
+        if move:
+            if type(move.get_piece) == Piece:
+                if move.color != self.color:
+                    return move
+            else:
+                return move
+        else:
+            return False
+    
     def __del__():
         pass
 
@@ -21,67 +32,76 @@ class Piece():
         return self.y
     
 class Pawn(Piece):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color, x, y):
+        super().__init__(color, x, y)
 
-    def legal_moves(self, square_list):
+    def legal_moves(self, board: Board):
         moves = []
-        for square in square_list:
-            dist_x = self.x - square.getX()
-            dist_y = self.y - square.getY()
-            if dist_x > 0 and dist_y > 0
-            if abs(dist_x) == abs(dist_y):
-            if square.getY() > self.y:
-                piece_in_path = square.getPiece()
-                if piece_in_path == None:
+        
+        if self.color == "b":
+            if self.y == 7:
+                if board.interrogate(self.x, self.y - 2) == Piece:
+                    if not Piece.get_color() == "w":
+                        square = board.get_square(self.x + 1, self.y - 2)
+                        moves.append(square)
+                    
+            if board.interrogate(self.x + 1, self.y - 1) == Piece:
+                if Piece.get_color() == "w":
+                    square = board.get_square(self.x + 1, self.y - 1)
                     moves.append(square)
-            
-            if square.getY() == self.y: 
-            if piece_in_path.get_color() != self.color:
+
+            if board.interrogate(self.x - 1, self.y - 1) == Piece:
+                if Piece.get_color() == "w":
+                    square = board.get_square(self.x - 1, self.y - 1)
+                    moves.append(square)
+                
+            if board.interrogate(self.x, self.y - 1) != Piece:
+                square = board.get_square(self.x, self.y - 1)
                 moves.append(square)
 
-        return moves
+        else:
+            if self.y == 2:
+                if board.interrogate(self.x, self.y + 2) == Piece:
+                    if not Piece.get_color() == "w":
+                        square = board.get_square(self.x + 1, self.y + 2)
+                        moves.append(square)
+                    
+            if board.interrogate(self.x + 1, self.y + 1) == Piece:
+                if Piece.get_color() == "w":
+                    square = board.get_square(self.x + 1, self.y + 1)
+                    moves.append(square)
+
+            if board.interrogate(self.x - 1, self.y + 1) == Piece:
+                if Piece.get_color() == "w":
+                    square = board.get_square(self.x - 1, self.y + 1)
+                    moves.append(square)
+                
+            if board.interrogate(self.x, self.y + 1) != Piece:
+                square = board.get_square(self.x, self.y + 1)
+                moves.append(square)
 
 class Bishop(Piece):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color, x, y):
+        super().__init__(color, x, y)
 
     def legal_moves(self, board: Board):
         moves = []
         i = 0
         while True:
             i += 1
-            nxt_x = self.x+i
-            nxt_y = self.y+i
-            if nxt_x > 8 or nxt_x < 1 or nxt_y > 8 or nxt_y < 1:
-                break
-            nxt = board.interrogate(nxt_x, nxt_y)
-            if type(nxt) == Piece:
-                if nxt.color != self.color:
-                    # append move, but figure out capturing
-                    square = board.get_square(nxt_x, nxt_y)
-                    moves.append(square)
-                break
-            else:
-                square = board.get_square(nxt_x, nxt_y)
-                moves.append(square)
+            move = super().legal_move(i, i)
+            if move:
+                moves.append(move)
+                continue
+            break
         i = 0
         while True:
             i += 1
-            nxt_x = self.x+i
-            nxt_y = self.y-i
-            if nxt_x > 8 or nxt_x < 1 or nxt_y > 8 or nxt_y < 1:
-                break
-            nxt = board.interrogate(nxt_x, nxt_y)
-            if type(nxt) == Piece:
-                if nxt.color != self.color:
-                    # append move, but figure out capturing
-                    square = board.get_square(nxt_x, nxt_y)
-                    moves.append(square)
-                break
-            else:
-                square = board.get_square(nxt_x, nxt_y)
-                moves.append(square)
+            move = super().legal_move(i, -i)
+            if move:
+                moves.append(move)
+                continue
+            break
         i = 0
         while True:
             i += 1
@@ -120,8 +140,8 @@ class Bishop(Piece):
         return moves
 
 class Rook(Piece):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color, x, y):
+        super().__init__(color, x, y)
 
     def legal_moves(self, board: Board):
         moves = []
@@ -194,36 +214,35 @@ class Rook(Piece):
         return moves
 
 class Knight(Piece):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color, x, y):
+        super().__init__(color, x, y)
 
     def legal_moves(self, board: Board):
         moves = []
-        for square in board.state: # we could also just go through each case without looping 64 times
-            dist = ((self.x - square.getX())**2 + (self.y - square.getY())**2)**(1/2)
-            if dist == (5)**(1/2):
-
-                piece_in_path = square.getPiece()
-                if piece_in_path == None:
-                    moves.append(square)
-                else:
-                    if piece_in_path.get_color() != self.color:
-                        moves.append(square)
-                        
+        moves.append(super().legal_move(1, 2))
+        moves.append(super().legal_move(-1, 2))   
+        moves.append(super().legal_move(-1, -2))      
+        moves.append(super().legal_move(1, -2))
+        moves.append(super().legal_move(2, 1))
+        moves.append(super().legal_move(-2, 1))   
+        moves.append(super().legal_move(-2, -1))      
+        moves.append(super().legal_move(2, -1))        
+        
         return moves
 
 class Queen(Rook, Bishop):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color, x, y):
+        super().__init__(color, x, y)
 
     def legal_moves():
-        super().legal_moves():
-
+        moves = []
+        moves.append(super().legal_moves(1, 2))
+            
         return moves
 
 class King(Piece):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color, x, y):
+        super().__init__(color, x, y)
 
     def legal_moves():
         
