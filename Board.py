@@ -4,8 +4,9 @@ class Square():
     def __init__(self, x, y, piece = None):
         self.x = x
         self.y = y
+        self.piece = piece
 
-    def set_piece(self, piece: Piece):
+    def set_piece(self, piece):
         self.piece = piece
     
     def clear(self):
@@ -13,6 +14,12 @@ class Square():
         
     def get_piece(self):
         return self.piece
+    
+    def getX(self):
+        return self.x
+    
+    def getY(self):
+        return self.y
 
 class Board():
     def __init__(self):
