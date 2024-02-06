@@ -32,9 +32,18 @@ class Piece():
     def getY(self):
         return self.y
     
+    def move(self, x, y, board):
+        board.get_square(self.x, self.y).clear()
+        self.x == x
+        self.y == y
+        board.get_square(x, y).set_piece(self)
+    
 class Pawn(Piece):
     def __init__(self, color, x, y):
         super().__init__(color, x, y)
+    
+    def __str__(self):
+        return self.color + 'P'
 
     def legal_moves(self, board):
         moves = []
@@ -84,6 +93,9 @@ class Pawn(Piece):
 class Bishop(Piece):
     def __init__(self, color, x, y):
         super().__init__(color, x, y)
+    
+    def __str__(self):
+        return self.color + 'B'
 
     def legal_moves(self, board):
         moves = []
@@ -124,6 +136,9 @@ class Bishop(Piece):
 class Rook(Piece):
     def __init__(self, color, x, y):
         super().__init__(color, x, y)
+    
+    def __str__(self):
+        return self.color + 'R'
 
     def legal_moves(self, board):
         moves = []
@@ -164,23 +179,29 @@ class Rook(Piece):
 class Knight(Piece):
     def __init__(self, color, x, y):
         super().__init__(color, x, y)
+    
+    def __str__(self):
+        return self.color + 'K'
 
     def legal_moves(self, board):
         moves = []
-        moves.append(super().legal_move(1, 2, board))
-        moves.append(super().legal_move(-1, 2, board))   
-        moves.append(super().legal_move(-1, -2, board))      
-        moves.append(super().legal_move(1, -2, board))
-        moves.append(super().legal_move(2, 1, board))
-        moves.append(super().legal_move(-2, 1, board))   
-        moves.append(super().legal_move(-2, -1, board))      
-        moves.append(super().legal_move(2, -1, board))        
-        
+        moves.append(super().legal_move(1, 2, board)[0])
+        moves.append(super().legal_move(-1, 2, board)[0])   
+        moves.append(super().legal_move(-1, -2, board)[0])      
+        moves.append(super().legal_move(1, -2, board)[0])
+        moves.append(super().legal_move(2, 1, board)[0])
+        moves.append(super().legal_move(-2, 1, board)[0])   
+        moves.append(super().legal_move(-2, -1, board)[0])      
+        moves.append(super().legal_move(2, -1, board)[0])
+        moves = [move for move in moves if move != None]
         return moves
 
 class Queen(Rook, Bishop):
     def __init__(self, color, x, y):
         super().__init__(color, x, y)
+    
+    def __str__(self):
+        return self.color + 'Q'
 
     def legal_moves(self, board):
         moves = []
@@ -191,6 +212,9 @@ class Queen(Rook, Bishop):
 class King(Piece):
     def __init__(self, color, x, y):
         super().__init__(color, x, y)
+    
+    def __str__(self):
+        return self.color + 'K'
 
     def legal_moves(self, board):
         moves = []

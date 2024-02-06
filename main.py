@@ -36,28 +36,39 @@ def main():
     board = Board()
     for i in range(8):
         square = board.get_square(i + 1, 2)
-        for pawn in w_pieces[8:]:
-            square.set_piece(pawn)
+        square.set_piece(w_pieces[8+i])
     
     for i in range(8):
         square = board.get_square(i + 1, 1)
-        for piece in w_pieces[:8]:
-            square.set_piece(piece)
+        square.set_piece(w_pieces[i])
 
-    for i in range(8):
-        square = board.get_square(i + 1, 7)
-        for pawn in b_pieces[8:]:
-            square.set_piece(pawn)
-    
     for i in range(8):
         square = board.get_square(i + 1, 8)
-        for piece in b_pieces[:8]:
-            square.set_piece(piece)
+        square.set_piece(b_pieces[i])
+    
+    for i in range(8):
+        square = board.get_square(i + 1, 7)
+        square.set_piece(b_pieces[8+i])
 
-    for square in b_rook1.legal_moves(board):
-        print (str(square.getX()) + "," + str(square.getY()))
-        
-    for square in b_bishop1.legal_moves(board):
-        print (str(square.getX()) + "," + str(square.getY()))
+    turn = 'b'
+    print(board)
+    while True:
+        if turn == 'b':
+            turn = 'w'
+        elif turn == 'w':
+            turn = 'b'
+        m = input('enter move \n')
+        i = board.interrogate(int(m[0]), int(m[1]))
+        f = board.get_square(int(m[2]), int(m[3]))
+        if i and f and i.color == turn:
+            moves = i.legal_moves(board)
+            if moves != None:
+                if f in moves:
+                    i.move(f.getX(), f.getY(), board)
+                    print(board)
+                    continue
+        print(board)
+        print('illegal move, motherfucker!')
+
 
 main()
