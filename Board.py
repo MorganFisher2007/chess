@@ -13,6 +13,7 @@ class Square():
             return ''
 
     def set_piece(self, piece):
+        del self.piece
         self.piece = piece
     
     def clear(self):
@@ -64,8 +65,13 @@ class Board():
                 if square.getX() == x and square.getY() == y:
                     return square
     
-    def checkcheck(self):
+    '''def checkcheck(self):
+        for piece in self.state:
+            if str(piece) == 'wK':
+                wKing = piece
+            elif str(piece) == 'bK':
+                bKing = piece
         for piece in self.state:
             if piece.color == 'w':
-                if #blackking is in legal moves of each piece
-            else:
+                if
+            else:'''
