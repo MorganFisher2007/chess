@@ -31,8 +31,8 @@ class Square():
 class Board():
     def __init__(self):
         self.state = []
-        for i in range(1, 9):
-            for j in range(1, 9):
+        for j in range(1, 9):
+            for i in range(1, 9):
                 self.state.append(Square(i, j))
     
     def __str__(self):
@@ -65,13 +65,13 @@ class Board():
                 if square.getX() == x and square.getY() == y:
                     return square
     
-    '''def checkcheck(self):
-        for piece in self.state:
-            if str(piece) == 'wK':
-                wKing = piece
-            elif str(piece) == 'bK':
-                bKing = piece
-        for piece in self.state:
-            if piece.color == 'w':
-                if
-            else:'''
+    #def checkcheck(self):
+        #for piece in self.state:
+            #if str(piece) == 'wK':
+                #wKing = piece
+            #elif str(piece) == 'bK':
+                #bKing = piece
+        #for piece in self.state:
+            #if piece.color == 'w':
+                #if
+           # else:
