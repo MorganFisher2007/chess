@@ -4,8 +4,8 @@ from ChessGUI import *
 
 def main():
     win = ChessGUI()
-    win.draw_squares()
 
+    # Making white pieces
     w_rook1 = Rook("w", 1, 1)
     w_rook2 = Rook("w", 8, 1)
     w_knight1 = Knight("w", 2, 1)
@@ -15,12 +15,14 @@ def main():
     w_queen = Queen("w", 4, 1)
     w_king = King("w", 5, 1)
 
-    w_pieces = [w_rook1, w_knight1, w_bishop1, w_queen, w_king, w_bishop2, w_knight2, w_rook2]
+    w_pieces = [w_rook1, w_knight1, w_bishop1, w_queen, w_king, w_bishop2,
+                w_knight2, w_rook2]
 
     for i in range(8):
         pawn = Pawn("w", i + 1, 2)
         w_pieces.append(pawn)
 
+    # Making black pieces
     b_rook1 = Rook("b", 1, 8)
     b_rook2 = Rook("b", 8, 8)
     b_knight1 = Knight("b", 2, 8)
@@ -30,11 +32,13 @@ def main():
     b_queen = Queen("b", 4, 8)
     b_king = King("b", 5, 8)
 
-    b_pieces = [b_rook1, b_knight1, b_bishop1, b_queen, b_king, b_bishop2, b_knight2, b_rook2]
+    b_pieces = [b_rook1, b_knight1, b_bishop1, b_queen, b_king, b_bishop2,
+                b_knight2, b_rook2]
 
     for i in range(8):
         pawn = Pawn("b", i + 1, 7)
         b_pieces.append(pawn)
+
 
     board = Board()
     for i in range(8):
@@ -53,30 +57,55 @@ def main():
         square = board.get_square(i + 1, 7)
         square.set_piece(b_pieces[8+i])
 
+    # Drawing board and pieces
+    win.draw_squares(board)
+
+    for w_piece in w_pieces:
+        win.draw_piece(w_piece)
+
+    for b_piece in b_pieces:
+        win.draw_piece(b_piece)
+
+    # Actual gameplay
     turn = 'w'
-    print(board)
     while True:
-        m = input('enter move \n')
-        i = board.interrogate(int(m[0]), int(m[1]))
-        f = board.get_square(int(m[2]), int(m[3]))
-        if i and f and i.color == turn:
-            moves = i.legal_moves(board)
-            if moves != None:
-                if f in moves:
-                    i.move(f.getX(), f.getY(), board)
-                    if turn == 'b':
-                        turn = 'w'
-                    elif turn == 'w':
-                        turn = 'b'
-                    print(board)
-                    continue
-        print(board)
-        print('illegal move, motherfucker!')
+        while True:
+            print("deez")
+            pt1 = win.getMouse()
+            #if quit_button.clicked(pt1):
+                #break
+            
+            if pt1.getX() >= 550 and pt1.getX() <= 1350:
+                if pt1.getY() >= 45 and pt1.getY() <= 845:
+                    print("so close")
+                    square1 = win.check_square(pt1, board)
+                    i = board.interrogate(square1.getX(), square1.getY())
 
-        for w_piece in w_pieces:
-            win.draw_piece(w_piece)
+                    if i and i.color == turn:
+                        moves = i.legal_moves(board)
+                        win.change_sqr_color(moves, "yellow3", "yellow2")
 
-        for b_piece in b_pieces:
-            win.draw_piece(b_piece)
+                        break
+
+        while True:
+            pt2 = win.getMouse()
+
+            if pt2.getX() >= 550 and pt2.getX() <= 1350:
+                if pt2.getY() >= 45 and pt2.getY() <= 845:
+                    f = win.check_square(pt2, board)
+
+                    if f in moves:
+                        i.move(f.getX(), f.getY(), board)
+                        win.undraw_piece(i)
+                        win.draw_piece(i)
+                        win.change_sqr_color(moves, "PaleGreen4",
+                                             "light goldenrod yellow")
+                        break
+
+        if turn == 'b':
+            turn = 'w'
+        elif turn == 'w':
+            turn = 'b'
+
 
 main()
