@@ -57,7 +57,8 @@ def main():
         square = board.get_square(i + 1, 7)
         square.set_piece(b_pieces[8+i])
 
-    # Drawing board and pieces
+    # Drawing everything
+    win.draw_rest()
     win.draw_squares(board)
 
     for w_piece in w_pieces:
