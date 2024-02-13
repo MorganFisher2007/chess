@@ -32,6 +32,12 @@ class Piece():
     
     def getIMG_file(self):
         return self.img_file
+
+    def setIMG_obj(self, img_obj):
+        self.img_obj = img_obj
+
+    def getIMG_obj(self):
+        return self.img_obj
     
     def move(self, x, y, board):
         board.get_square(self.x, self.y).clear()
