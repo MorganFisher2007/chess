@@ -71,15 +71,18 @@ def main():
     turn = 'w'
     while True:
         while True:
-            print("deez")
             pt1 = win.getMouse()
-            #if quit_button.clicked(pt1):
-                #break
+            if win.check_quit(pt1):
+                win.close()
+                break
+
+            elif win.check_clock(pt1):
+                win.switch_clock()
+                continue
             
             if pt1.getX() >= 550 and pt1.getX() <= 1350:
                 if pt1.getY() >= 45 and pt1.getY() <= 845:
-                    print("so close")
-                    square1 = win.check_square(pt1, board)
+                    square1 = win.find_square(pt1, board)
                     i = board.interrogate(square1.getX(), square1.getY())
 
                     if i and i.color == turn:
@@ -93,7 +96,7 @@ def main():
 
             if pt2.getX() >= 550 and pt2.getX() <= 1350:
                 if pt2.getY() >= 45 and pt2.getY() <= 845:
-                    f = win.check_square(pt2, board)
+                    f = win.find_square(pt2, board)
 
                     if f in moves:
                         i.move(f.getX(), f.getY(), board)
