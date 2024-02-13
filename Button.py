@@ -70,4 +70,12 @@ class Button:
     def checkActive(self):
         "checks if button is active"
         return self.active
-        
+
+    def setSize(self, point):
+        self.label.setSize(point)
+
+    def setFill(self, color):
+        self.color = color
+
+    def getFill(self):
+        return self.color
