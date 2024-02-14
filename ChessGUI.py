@@ -58,7 +58,7 @@ class ChessGUI:
         clock_base.setFill("sienna4")
         clock_base.draw(self.win)
 
-        self.click1 = Button(Point(175, 330), 110, 230, "", "grey12")
+        self.click1 = Button(Point(175, 330), 110, 230, "", "grey20")
         self.click1.activate()
         self.click1.draw(self.win)
 
@@ -66,7 +66,7 @@ class ChessGUI:
         lin1.setWidth(3)
         lin1.draw(self.win)
 
-        self.click2 = Button(Point(175, 560), 110, 230, "", "grey20")
+        self.click2 = Button(Point(175, 560), 110, 230, "", "grey12")
         self.click2.activate()
         self.click2.draw(self.win)
 
