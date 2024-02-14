@@ -23,12 +23,16 @@ class Piece():
 
     def get_color(self):
         return self.color
-    
+    # maybe we should standardize camelCase vs underscore in method naming (also in Board.py)
     def getX(self):
         return self.x
     
     def getY(self):
         return self.y
+    
+    def setPos(self, x, y):
+        self.x = x
+        self.y = y
     
     def getIMG_file(self):
         return self.img_file
@@ -64,48 +68,48 @@ class Pawn(Piece):
         if self.color == "b":
             p = board.interrogate(self.x, self.y - 2)   
             if self.y == 7:
-                if type(p) != Piece:
+                if p == None:
                     square = board.get_square(self.x, self.y - 2)
                     moves.append(square)
             
             p = board.interrogate(self.x + 1, self.y - 1)       
-            if type(p) == Piece:
+            if isinstance(p, Piece):
                 if p.get_color() == "w":
                     square = board.get_square(self.x + 1, self.y - 1)
                     moves.append(square)
             
             p = board.interrogate(self.x - 1, self.y - 1) 
-            if type(p) == Piece:
+            if isinstance(p, Piece):
                 if p.get_color() == "w":
                     square = board.get_square(self.x - 1, self.y - 1)
                     moves.append(square)
                 
             p = board.interrogate(self.x, self.y - 1) 
-            if type(p) != Piece:
+            if p == None:
                 square = board.get_square(self.x, self.y - 1)
                 moves.append(square)
 
         else:
             p = board.interrogate(self.x, self.y + 2)   
             if self.y == 2:
-                if type(p) != Piece:
+                if p == None:
                     square = board.get_square(self.x, self.y + 2)
                     moves.append(square)
             
             p = board.interrogate(self.x + 1, self.y + 1)       
-            if type(p) == Piece:
+            if isinstance(p, Piece):
                 if p.get_color() == "b":
                     square = board.get_square(self.x + 1, self.y + 1)
                     moves.append(square)
             
             p = board.interrogate(self.x - 1, self.y + 1) 
-            if type(p) == Piece:
+            if isinstance(p, Piece):
                 if p.get_color() == "b":
                     square = board.get_square(self.x - 1, self.y + 1)
                     moves.append(square)
                 
             p = board.interrogate(self.x, self.y + 1) 
-            if type(p) != Piece:
+            if p == None:
                 square = board.get_square(self.x, self.y + 1)
                 moves.append(square)
             
@@ -232,9 +236,11 @@ class Knight(Piece):
         moves = [move for move in moves if move != None]
         return moves
 
-class Queen(Rook, Bishop):
+class Queen(Piece):
     def __init__(self, color, x, y):
         super().__init__(color, x, y)
+        self.v = Rook(self.color, self.x, self.y)
+        self.d = Bishop(self.color, self.x, self.y)
 
         if color == "b":
             self.img_file = "bQ.png"
@@ -245,10 +251,9 @@ class Queen(Rook, Bishop):
         return self.color + 'Q'
 
     def legal_moves(self, board):
-        moves = []
-        moves.append(super().legal_move(1, 2, board))
-            
-        return moves
+        self.v.setPos(self.x, self.y)
+        self.d.setPos(self.x, self.y)
+        return self.v.legal_moves(board) + self.d.legal_moves(board)
 
 class King(Piece):
     def __init__(self, color, x, y):
