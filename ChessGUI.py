@@ -55,7 +55,7 @@ class ChessGUI:
 
         rect1 = Rectangle(Point(100, 195), Point(250, 695))
         rect1.setWidth(0)
-        rect1.setFill("salmon4")
+        rect1.setFill("sienna")
         rect1.draw(self.win)
 
         rect2 = Rectangle(Point(250, 195), Point(440, 695))
@@ -75,7 +75,7 @@ class ChessGUI:
         self.click2.activate()
         self.click2.draw(self.win)
 
-        screen = Rectangle(Point(270, 225), Point(410, 665))
+        screen = Rectangle(Point(280, 225), Point(410, 665))
         screen.setWidth(0)
         screen.setFill("cornsilk4")
         screen.draw(self.win)
@@ -148,6 +148,8 @@ class ChessGUI:
         colon2.setStyle("bold")
         colon2.draw(self.win)
 
+        #inst = 
+
     def getMouse(self):
         return self.win.getMouse()
 
@@ -213,3 +215,4 @@ class ChessGUI:
 
     def close(self):
         self.win.close()
+    
