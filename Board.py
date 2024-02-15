@@ -65,13 +65,51 @@ class Board():
                 if square.getX() == x and square.getY() == y:
                     return square
     
-    #def checkcheck(self):
-        #for piece in self.state:
-            #if str(piece) == 'wK':
-                #wKing = piece
-            #elif str(piece) == 'bK':
-                #bKing = piece
-        #for piece in self.state:
-            #if piece.color == 'w':
-                #if
-           # else:
+    def checkcheck(self):
+        for square in self.state:
+            piece = square.get_piece()
+            if piece == None:
+                continue
+            if str(piece) == 'wK':
+                wKing = self.get_square(piece.getX(), piece.getY())
+            elif str(piece) == 'bK':
+                bKing = self.get_square(piece.getX(), piece.getY())
+        for square in self.state:
+            piece = square.get_piece()
+            if piece == None:
+                continue
+            if piece.color == 'w':
+                for move in piece.legal_moves(self):
+                    if move == bKing:
+                        return 'b'
+            else:
+                for move in piece.legal_moves(self):
+                    if move == wKing:
+                        return 'w'
+        return False
+
+    def checkmate(self):
+        for square in self.state:
+            piece = square.get_piece()
+            if str(piece) == 'wK':
+                wKing = piece
+            elif str(piece) == 'bK':
+                bKing = piece
+        if self.checkcheck() == 'w':
+            for move in wKing.legal_moves():
+                tboard = self
+                tking = tboard.interrogate(wKing.getX(), wKing.getY())
+                tking.move(move)
+                if tboard.checkcheck() == False:
+                    return False
+            return True
+        
+        elif self.checkcheck() == 'b':
+            for move in bKing.legal_moves():
+                tboard = self
+                tking = tboard.interrogate(bKing.getX(), bKing.getY())
+                tking.move(move)
+                if tboard.checkcheck() == False:
+                    return False
+            return True
+        return False
