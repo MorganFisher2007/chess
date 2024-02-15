@@ -80,7 +80,7 @@ def main():
                 win.switch_clock()
                 continue
             
-            if pt1.getX() >= 550 and pt1.getX() <= 1350:
+            elif pt1.getX() >= 550 and pt1.getX() <= 1350:
                 if pt1.getY() >= 45 and pt1.getY() <= 845:
                     square1 = win.find_square(pt1, board)
                     i = board.interrogate(square1.getX(), square1.getY())
@@ -89,12 +89,23 @@ def main():
                         moves = i.legal_moves(board)
                         win.change_sqr_color(moves, "yellow3", "yellow2")
 
+                        if len(moves) == 0:
+                            continue
+
                         break
 
         while True:
             pt2 = win.getMouse()
 
-            if pt2.getX() >= 550 and pt2.getX() <= 1350:
+            if win.check_quit(pt1):
+                win.close()
+                break
+
+            elif win.check_clock(pt1):
+                win.switch_clock()
+                continue
+            
+            elif pt2.getX() >= 550 and pt2.getX() <= 1350:
                 if pt2.getY() >= 45 and pt2.getY() <= 845:
                     f = win.find_square(pt2, board)
 
