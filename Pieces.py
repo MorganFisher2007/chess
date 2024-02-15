@@ -8,16 +8,16 @@ class Piece():
         self.img_file = ""
         
     def legal_move(self, dx, dy, board):
-        move = board.get_square(self.x+dx, self.y+dy)
-        if move:
-            piece = move.get_piece()
+        m = board.get_square(self.x+dx, self.y+dy)
+        if m:
+            piece = m.get_piece()
             if piece != None:
                 if piece.get_color() != self.color:
-                    return move, False
+                    return m, False
                 else:
                     return None, False
             else:
-                return move, True
+                return m, True
         else:
             return None, False
 
@@ -66,11 +66,16 @@ class Pawn(Piece):
         moves = []
         
         if self.color == "b":
-            p = board.interrogate(self.x, self.y - 2)   
-            if self.y == 7:
-                if p == None:
-                    square = board.get_square(self.x, self.y - 2)
-                    moves.append(square)
+            p = board.interrogate(self.x, self.y - 1)
+            if p == None:
+                square = board.get_square(self.x, self.y - 1)
+                moves.append(square)
+                
+                if self.y == 7:
+                    p = board.interrogate(self.x, self.y - 2)
+                    if p == None:
+                        square = board.get_square(self.x, self.y - 2)
+                        moves.append(square)
             
             p = board.interrogate(self.x + 1, self.y - 1)       
             if isinstance(p, Piece):
@@ -83,18 +88,18 @@ class Pawn(Piece):
                 if p.get_color() == "w":
                     square = board.get_square(self.x - 1, self.y - 1)
                     moves.append(square)
-                
-            p = board.interrogate(self.x, self.y - 1) 
-            if p == None:
-                square = board.get_square(self.x, self.y - 1)
-                moves.append(square)
 
         else:
-            p = board.interrogate(self.x, self.y + 2)   
-            if self.y == 2:
-                if p == None:
-                    square = board.get_square(self.x, self.y + 2)
-                    moves.append(square)
+            p = board.interrogate(self.x, self.y + 1)
+            if p == None:
+                square = board.get_square(self.x, self.y + 1)
+                moves.append(square)
+                
+                if self.y == 2:
+                    p = board.interrogate(self.x, self.y + 2)
+                    if p == None:
+                        square = board.get_square(self.x, self.y + 2)
+                        moves.append(square)
             
             p = board.interrogate(self.x + 1, self.y + 1)       
             if isinstance(p, Piece):
@@ -107,11 +112,6 @@ class Pawn(Piece):
                 if p.get_color() == "b":
                     square = board.get_square(self.x - 1, self.y + 1)
                     moves.append(square)
-                
-            p = board.interrogate(self.x, self.y + 1) 
-            if p == None:
-                square = board.get_square(self.x, self.y + 1)
-                moves.append(square)
             
         return moves
 
