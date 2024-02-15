@@ -53,10 +53,15 @@ class ChessGUI:
         self.quit_button.activate()
         self.quit_button.draw(self.win)
 
-        clock_base = Rectangle(Point(100, 195), Point(440, 695))
-        clock_base.setWidth(0)
-        clock_base.setFill("sienna4")
-        clock_base.draw(self.win)
+        rect1 = Rectangle(Point(100, 195), Point(250, 695))
+        rect1.setWidth(0)
+        rect1.setFill("salmon4")
+        rect1.draw(self.win)
+
+        rect2 = Rectangle(Point(250, 195), Point(440, 695))
+        rect2.setWidth(0)
+        rect2.setFill("sienna4")
+        rect2.draw(self.win)
 
         self.click1 = Button(Point(175, 330), 110, 230, "", "grey20")
         self.click1.activate()
@@ -70,25 +75,25 @@ class ChessGUI:
         self.click2.activate()
         self.click2.draw(self.win)
 
-        screen = Rectangle(Point(260, 225), Point(410, 665))
+        screen = Rectangle(Point(270, 225), Point(410, 665))
         screen.setWidth(0)
         screen.setFill("cornsilk4")
         screen.draw(self.win)
 
         for i in range(4):
-            txt1 = Text(Point(335, 245 + i * 50), "–– ––")
+            txt1 = Text(Point(345, 245 + i * 50), "–– ––")
             txt1.setSize(36)
             txt1.setStyle("bold")
 
-            txt2 = Text(Point(290, 259 + i * 50), "l")
+            txt2 = Text(Point(300, 259 + i * 50), "l")
             txt2.setSize(36)
             txt2.setStyle("bold")
 
-            txt3 = Text(Point(335, 280 + i * 50), "–– ––")
+            txt3 = Text(Point(345, 280 + i * 50), "–– ––")
             txt3.setSize(36)
             txt3.setStyle("bold")
 
-            txt4 = Text(Point(380, 259 + i * 50), "l")
+            txt4 = Text(Point(390, 259 + i * 50), "l")
             txt4.setSize(36)
             txt4.setStyle("bold")
 
@@ -102,29 +107,29 @@ class ChessGUI:
             txt3.draw(self.win)
             txt4.draw(self.win)
 
-        colon1 = Text(Point(335, 345), ".   .")
+        colon1 = Text(Point(345, 345), ".   .")
         colon1.setSize(36)
         colon1.setStyle("bold")
         colon1.draw(self.win)
         
-        lin2 = Line(Point(280, 444), Point(390, 444))
+        lin2 = Line(Point(290, 444), Point(400, 444))
         lin2.setWidth(2)
         lin2.draw(self.win)
         
         for i in range(4):
-            txt5 = Text(Point(335, 465 + i * 50), "–– ––")
+            txt5 = Text(Point(345, 465 + i * 50), "–– ––")
             txt5.setSize(36)
             txt5.setStyle("bold")
 
-            txt6 = Text(Point(290, 479 + i * 50), "l")
+            txt6 = Text(Point(300, 479 + i * 50), "l")
             txt6.setSize(36)
             txt6.setStyle("bold")
 
-            txt7 = Text(Point(335, 500 + i * 50), "–– ––")
+            txt7 = Text(Point(345, 500 + i * 50), "–– ––")
             txt7.setSize(36)
             txt7.setStyle("bold")
 
-            txt8 = Text(Point(380, 479 + i * 50), "l")
+            txt8 = Text(Point(390, 479 + i * 50), "l")
             txt8.setSize(36)
             txt8.setStyle("bold")
 
@@ -138,7 +143,7 @@ class ChessGUI:
             txt7.draw(self.win)
             txt8.draw(self.win)
 
-        colon2 = Text(Point(335, 565), ".   .")
+        colon2 = Text(Point(345, 565), ".   .")
         colon2.setSize(36)
         colon2.setStyle("bold")
         colon2.draw(self.win)
@@ -208,4 +213,3 @@ class ChessGUI:
 
     def close(self):
         self.win.close()
-        
