@@ -269,4 +269,13 @@ class King(Piece):
 
     def legal_moves(self, board):
         moves = []
+        moves.append(super().legal_move(1, 0, board)[0])
+        moves.append(super().legal_move(1, 1, board)[0])
+        moves.append(super().legal_move(1, -1, board)[0])
+        moves.append(super().legal_move(-1, 0, board)[0])
+        moves.append(super().legal_move(-1, 1, board)[0])
+        moves.append(super().legal_move(-1, -1, board)[0])
+        moves.append(super().legal_move(0, 1, board)[0])
+        moves.append(super().legal_move(0, -1, board)[0])
+        moves = [move for move in moves if move != None]
         return moves
