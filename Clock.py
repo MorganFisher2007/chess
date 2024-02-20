@@ -116,4 +116,5 @@ class Clock:
         self.time = time
 
     def get_time(self):
+        self.time = int(self.time[0:2]) * 60 + int(self.time[2:4])
         return self.time
