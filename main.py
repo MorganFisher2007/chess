@@ -131,11 +131,9 @@ def main():
             if win.check_clock(pt3):
                 time2 = time.strftime("%H:%M:%S")
                 if turn == 'w':
-                    print(w_time1, time2)
                     win.switch_clock()
                     win.update_clock('w', w_time1, time2)
                 else:
-                    print(b_time1, time2)
                     win.switch_clock()
                     win.update_clock('b', b_time1, time2)
                 break
