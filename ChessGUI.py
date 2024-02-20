@@ -49,6 +49,20 @@ class ChessGUI:
             sqr.draw(self.win)
     
     def draw_rest(self):
+        letters = ["A", "B", "C", "D", "E", "F", "G", "H"]
+
+        for i in range(1, 9):
+            txt = Text(Point(1370, i * 100 - 5), str(i))
+            txt.setTextColor("white")
+            txt.draw(self.win)
+
+        i = 0
+        for letter in letters:
+            i += 1
+            txt = Text(Point(i * 100 + 500, 860), letter)
+            txt.setTextColor("white")
+            txt.draw(self.win)
+        
         self.quit_button = Button(Point(100, 825), 90, 40, "Quit", "tomato")
         self.quit_button.setSize(15)
         self.quit_button.activate()
@@ -141,7 +155,6 @@ class ChessGUI:
             secs = sec_time % 60
             time = str(mins) + str(secs)
             time = "0" * abs(len(time) - 4) + time
-            print(sec_time)
             
             self.clock1.draw(self.win, time)
             self.clock1.set_time(str(time))
@@ -151,7 +164,6 @@ class ChessGUI:
             sec2 = int(time2[0:2]) * 3600 + int(time2[3:5]) * 60 + int(time2[6:8])
             
             sec_time = int(self.clock2.get_time()) - (sec2 - sec1)
-            print(sec_time)
             
             mins = sec_time // 60
             secs = sec_time % 60
