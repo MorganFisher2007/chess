@@ -113,3 +113,10 @@ class Board():
                     return False
             return True
         return False
+
+    def check_promote(self):
+            for square in self.state():
+                piece = square.get_piece()
+                if type(piece) == Pawn:
+                    if piece.getY in [1, 8]:
+                        return piece
