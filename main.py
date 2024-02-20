@@ -1,6 +1,7 @@
 from Board import *
 from Pieces import *
 from ChessGUI import *
+import time
 
 def main():
     win = ChessGUI()
@@ -68,22 +69,24 @@ def main():
         win.draw_piece(b_piece)
 
     # Actual gameplay
+    counter = 0
     turn = 'w'
     while True:
+        if turn == 'b':
+            b_time1 = time.strftime("%H:%M:%S")
+        else:
+            w_time1 = time.strftime("%H:%M:%S")
+            
         while True:
             pt1 = win.getMouse()
+            
             if win.check_quit(pt1):
                 win.close()
-                break
-
-            elif win.check_clock(pt1):
-                win.switch_clock()
-                continue
             
             elif pt1.getX() >= 550 and pt1.getX() <= 1350:
                 if pt1.getY() >= 45 and pt1.getY() <= 845:
-                    square1 = win.find_square(pt1, board)
-                    i = board.interrogate(square1.getX(), square1.getY())
+                    sqr = win.find_square(pt1, board)
+                    i = board.interrogate(sqr.getX(), sqr.getY())
 
                     if i and i.color == turn:
                         moves = i.legal_moves(board)
@@ -99,11 +102,6 @@ def main():
 
             if win.check_quit(pt1):
                 win.close()
-                break
-
-            elif win.check_clock(pt1):
-                win.switch_clock()
-                continue
             
             elif pt2.getX() >= 550 and pt2.getX() <= 1350:
                 if pt2.getY() >= 45 and pt2.getY() <= 845:
@@ -115,12 +113,42 @@ def main():
                         win.draw_piece(i)
                         win.change_sqr_color(moves, "PaleGreen4",
                                              "light goldenrod yellow")
+                        cont = False    
                         break
 
+                    else:
+                        win.change_sqr_color(moves, "PaleGreen4",
+                                             "light goldenrod yellow")
+                        cont = True
+                        break
+
+        if cont == True:
+            continue
+
+        while True:
+            pt3 = win.getMouse()
+            
+            if win.check_clock(pt3):
+                time2 = time.strftime("%H:%M:%S")
+                if turn == 'w':
+                    print(w_time1, time2)
+                    win.switch_clock()
+                    win.update_clock('w', w_time1, time2)
+                else:
+                    print(b_time1, time2)
+                    win.switch_clock()
+                    win.update_clock('b', b_time1, time2)
+                break
+
+            elif win.check_quit(pt3):
+                win.close()
+        
         if turn == 'b':
             turn = 'w'
         elif turn == 'w':
             turn = 'b'
+
+        counter += 1
 
 
 main()
