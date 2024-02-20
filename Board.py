@@ -120,3 +120,4 @@ class Board():
                 if type(piece) == Pawn:
                     if piece.getY in [1, 8]:
                         return piece
+            return False
