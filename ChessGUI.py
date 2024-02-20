@@ -137,12 +137,10 @@ class ChessGUI:
             
             sec_time = int(self.clock1.get_time()) - (sec2 - sec1)
             
-            print(int(self.clock2.get_time()))
-            min = sec_time // 60
-            sec = sec_time % 60
-            time = str(min) + str(sec)
+            mins = sec_time // 60
+            secs = sec_time % 60
+            time = str(mins) + str(secs)
             time = "0" * abs(len(time) - 4) + time
-            print(time)
             
             self.clock1.draw(self.win, time)
             self.clock1.set_time(sec_time)
@@ -152,12 +150,11 @@ class ChessGUI:
             sec2 = int(time2[0:2]) * 3600 + int(time2[3:5]) * 60 + int(time2[6:8])
             
             sec_time = int(self.clock2.get_time()) - (sec2 - sec1)
-            print(int(self.clock2.get_time()))
-            min = sec_time // 60
-            sec = sec_time % 60
-            time = str(min) + str(sec)
+            
+            mins = sec_time // 60
+            secs = sec_time % 60
+            time = str(mins) + str(secs)
             time = "0" * abs(len(time) - 4) + time
-            print(time)
             
             self.clock2.draw(self.win, time)
             self.clock2.set_time(sec_time)
