@@ -1,6 +1,7 @@
 from graphics import *
 from Pieces import *
 from Button import Button
+from Clock import Clock
 
 #from screeninfo import get_monitors
 
@@ -80,73 +81,15 @@ class ChessGUI:
         screen.setFill("cornsilk4")
         screen.draw(self.win)
 
-        for i in range(4):
-            txt1 = Text(Point(345, 245 + i * 50), "–– ––")
-            txt1.setSize(36)
-            txt1.setStyle("bold")
+        self.clock1 = Clock('w')
+        self.clock1.draw(self.win, "1000")
 
-            txt2 = Text(Point(300, 259 + i * 50), "l")
-            txt2.setSize(36)
-            txt2.setStyle("bold")
+        self.clock2 = Clock('b')
+        self.clock2.draw(self.win, "1000")
 
-            txt3 = Text(Point(345, 280 + i * 50), "–– ––")
-            txt3.setSize(36)
-            txt3.setStyle("bold")
-
-            txt4 = Text(Point(390, 259 + i * 50), "l")
-            txt4.setSize(36)
-            txt4.setStyle("bold")
-
-            if i == 0:
-                txt1.setTextColor("grey50")
-                txt2.setTextColor("grey50")
-                txt4.setTextColor("grey50")
-            
-            txt1.draw(self.win)
-            txt2.draw(self.win)
-            txt3.draw(self.win)
-            txt4.draw(self.win)
-
-        colon1 = Text(Point(345, 345), ".   .")
-        colon1.setSize(36)
-        colon1.setStyle("bold")
-        colon1.draw(self.win)
-        
         lin2 = Line(Point(290, 444), Point(400, 444))
         lin2.setWidth(2)
         lin2.draw(self.win)
-        
-        for i in range(4):
-            txt5 = Text(Point(345, 465 + i * 50), "–– ––")
-            txt5.setSize(36)
-            txt5.setStyle("bold")
-
-            txt6 = Text(Point(300, 479 + i * 50), "l")
-            txt6.setSize(36)
-            txt6.setStyle("bold")
-
-            txt7 = Text(Point(345, 500 + i * 50), "–– ––")
-            txt7.setSize(36)
-            txt7.setStyle("bold")
-
-            txt8 = Text(Point(390, 479 + i * 50), "l")
-            txt8.setSize(36)
-            txt8.setStyle("bold")
-
-            if i == 0:
-                txt5.setTextColor("grey50")
-                txt6.setTextColor("grey50")
-                txt8.setTextColor("grey50")
-            
-            txt5.draw(self.win)
-            txt6.draw(self.win)
-            txt7.draw(self.win)
-            txt8.draw(self.win)
-
-        colon2 = Text(Point(345, 565), ".   .")
-        colon2.setSize(36)
-        colon2.setStyle("bold")
-        colon2.draw(self.win)
 
         #inst = 
 
@@ -187,6 +130,38 @@ class ChessGUI:
         self.click1.activate()
         self.click2.activate()
 
+    def update_clock(self, side, time1, time2):
+        if side == 'w':
+            sec1 = int(time1[0:2]) * 3600 + int(time1[3:5]) * 60 + int(time1[6:8])
+            sec2 = int(time2[0:2]) * 3600 + int(time2[3:5]) * 60 + int(time2[6:8])
+            
+            sec_time = int(self.clock1.get_time()) - (sec2 - sec1)
+            
+            print(int(self.clock2.get_time()))
+            min = sec_time // 60
+            sec = sec_time % 60
+            time = str(min) + str(sec)
+            time = "0" * abs(len(time) - 4) + time
+            print(time)
+            
+            self.clock1.draw(self.win, time)
+            self.clock1.set_time(sec_time)
+
+        elif side == 'b':
+            sec1 = int(time1[0:2]) * 3600 + int(time1[3:5]) * 60 + int(time1[6:8])
+            sec2 = int(time2[0:2]) * 3600 + int(time2[3:5]) * 60 + int(time2[6:8])
+            
+            sec_time = int(self.clock2.get_time()) - (sec2 - sec1)
+            print(int(self.clock2.get_time()))
+            min = sec_time // 60
+            sec = sec_time % 60
+            time = str(min) + str(sec)
+            time = "0" * abs(len(time) - 4) + time
+            print(time)
+            
+            self.clock2.draw(self.win, time)
+            self.clock2.set_time(sec_time)
+
     def change_sqr_color(self, squares, color1, color2):
         for square in squares:
             x = square.getX() * 100 + 500
@@ -215,4 +190,4 @@ class ChessGUI:
 
     def close(self):
         self.win.close()
-    
+        
