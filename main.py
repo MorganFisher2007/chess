@@ -59,7 +59,6 @@ def main():
         square.set_piece(b_pieces[8+i])
 
     # Drawing everything
-    win.draw_rest()
     win.draw_squares(board)
 
     for w_piece in w_pieces:
@@ -68,14 +67,18 @@ def main():
     for b_piece in b_pieces:
         win.draw_piece(b_piece)
 
+    win.draw_inst("Welcome to Chess!")
+    win.draw_rest()
+
     # Actual gameplay
-    counter = 0
     turn = 'w'
     while True:
-        if turn == 'b':
-            b_time1 = time.strftime("%H:%M:%S")
-        else:
+        if turn == 'w':
             w_time1 = time.strftime("%H:%M:%S")
+            win.set_inst("It is white's move")
+        else:
+            b_time1 = time.strftime("%H:%M:%S")
+            win.set_inst("It is black's move")
             
         while True:
             pt1 = win.getMouse()
@@ -113,6 +116,9 @@ def main():
                         win.draw_piece(i)
                         win.change_sqr_color(moves, "PaleGreen4",
                                              "light goldenrod yellow")
+
+                        win.set_inst(str(i) + " moved to " + str(f))
+                        
                         cont = False    
                         break
 
@@ -145,8 +151,6 @@ def main():
             turn = 'w'
         elif turn == 'w':
             turn = 'b'
-
-        counter += 1
 
 
 main()
