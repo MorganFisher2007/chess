@@ -85,6 +85,7 @@ def main():
             
             if win.check_quit(pt1):
                 win.close()
+                return
             
             elif pt1.getX() >= 550 and pt1.getX() <= 1350:
                 if pt1.getY() >= 45 and pt1.getY() <= 845:
@@ -105,6 +106,7 @@ def main():
 
             if win.check_quit(pt1):
                 win.close()
+                return
             
             elif pt2.getX() >= 550 and pt2.getX() <= 1350:
                 if pt2.getY() >= 45 and pt2.getY() <= 845:
@@ -133,8 +135,12 @@ def main():
 
         while True:
             pt3 = win.getMouse()
+
+            if win.check_quit(pt3):
+                win.close()
+                return
             
-            if win.check_clock(pt3):
+            elif win.check_clock(pt3):
                 time2 = time.strftime("%H:%M:%S")
                 if turn == 'w':
                     win.switch_clock()
@@ -143,9 +149,6 @@ def main():
                     win.switch_clock()
                     win.update_clock('b', b_time1, time2)
                 break
-
-            elif win.check_quit(pt3):
-                win.close()
         
         if turn == 'b':
             turn = 'w'
