@@ -49,7 +49,7 @@ class ChessGUI:
             sqr.draw(self.win)
     
     def draw_rest(self):
-        letters = ["A", "B", "C", "D", "E", "F", "G", "H"]
+        letters = ["a", "b", "c", "c", "e", "f", "g", "h"]
 
         for i in range(1, 9):
             txt = Text(Point(1370, i * 100 - 5), str(i))
@@ -105,7 +105,14 @@ class ChessGUI:
         lin2.setWidth(2)
         lin2.draw(self.win)
 
-        #inst = 
+    def draw_inst(self, text):
+        self.inst = Text(Point(270, 115), text)
+        self.inst.setTextColor("white")
+        self.inst.setSize(20)
+        self.inst.draw(self.win)
+
+    def set_inst(self, text):
+        self.inst.setText(text)
 
     def getMouse(self):
         return self.win.getMouse()
@@ -201,4 +208,3 @@ class ChessGUI:
 
     def close(self):
         self.win.close()
-        
