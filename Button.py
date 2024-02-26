@@ -18,7 +18,7 @@ class Button:
         # creating rectangle instance variable with self.p1 and self.p2
         self.outline = Rectangle(self.p1, self.p2)
 
-        self.img = ""
+        self.img = 
         self.deactivate()
 
     def draw(self, win):
@@ -33,6 +33,8 @@ class Button:
         self.deactivate()
         self.outline.undraw()
         self.label.undraw()
+        if self.img:
+            self.img_obj.undraw(win)
 
     def activate(self):
         "makes button clickable"
@@ -87,5 +89,4 @@ class Button:
     def setIMG(self, img_file):
         self.img = True
         self.img_obj = Image(self.center, img_file)
-
-    
+        
