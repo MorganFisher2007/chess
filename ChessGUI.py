@@ -206,5 +206,49 @@ class ChessGUI:
                 self.undraw_piece(p)
                 self.draw_piece(p)
 
+    def ask_promote(self, piece):
+        x = piece.getX() * 100 + 498
+        if piece.getY() == 1:
+            y = 70
+        else:
+            y = 1400
+        
+        self.prompt = Rectangle(Point(x - 100, y), Point(x + 100, y))
+        self.prompt.draw(self.win)
+
+        Nbutton = Button(Point(x - 75, y), 50, 50, "", "white")
+        Bbutton = Button(Point(x - 25, y), 50, 50, "", "white")
+        Rbutton = Button(Point(x + 25, y), 50, 50, "", "white")
+        Qbutton = Button(Point(x + 75, y), 50, 50, "", "white")
+
+        if piece.get_color() == "w":
+            Nbutton.setIMG("wK.png")
+            Bbutton.setIMG("wB.png")
+            Rbutton.setIMG("wR.png")
+            Qbutton.setIMG("wQ.png")
+        else:
+            Nbutton.setIMG("bK.png")
+            Bbutton.setIMG("bB.png")
+            Rbutton.setIMG("bR.png")
+            Qbutton.setIMG("bQ.png")
+
+        Nbutton.draw(self.win)
+        Bbutton.draw(self.win)
+        Rbutton.draw(self.win)
+        Qbutton.draw(self.win)
+
+        while True:
+            pt = self.win.getMouse()
+
+            if Nbutton.clicked(pt):
+                return Knight
+            elif Bbutton.clicked(pt):
+                return Bishop
+            elif Rbutton.clicked(pt):
+                return Rook
+            elif Qbutton.clicked(pt):
+                return Queen
+
     def close(self):
         self.win.close()
+        
