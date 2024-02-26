@@ -209,46 +209,57 @@ class ChessGUI:
     def ask_promote(self, piece):
         x = piece.getX() * 100 + 498
         if piece.getY() == 1:
-            y = 70
+            y = 100
         else:
-            y = 1400
+            y = 800
         
-        self.prompt = Rectangle(Point(x - 100, y), Point(x + 100, y))
-        self.prompt.draw(self.win)
+        prompt = Rectangle(Point(x - 140, y), Point(x + 140, y))
+        prompt.draw(self.win)
 
-        Nbutton = Button(Point(x - 75, y), 50, 50, "", "white")
-        Bbutton = Button(Point(x - 25, y), 50, 50, "", "white")
-        Rbutton = Button(Point(x + 25, y), 50, 50, "", "white")
-        Qbutton = Button(Point(x + 75, y), 50, 50, "", "white")
+        Nbutton = Button(Point(x - 105, y), 70, 70, "", "white")
+        Bbutton = Button(Point(x - 35, y), 70, 70, "", "white")
+        Rbutton = Button(Point(x + 35, y), 70, 70, "", "white")
+        Qbutton = Button(Point(x + 105, y), 70, 70, "", "white")
 
         if piece.get_color() == "w":
-            Nbutton.setIMG("wK.png")
+            Nbutton.setIMG("wN.png")
             Bbutton.setIMG("wB.png")
             Rbutton.setIMG("wR.png")
             Qbutton.setIMG("wQ.png")
         else:
-            Nbutton.setIMG("bK.png")
+            Nbutton.setIMG("bN.png")
             Bbutton.setIMG("bB.png")
             Rbutton.setIMG("bR.png")
             Qbutton.setIMG("bQ.png")
 
         Nbutton.draw(self.win)
+        Nbutton.activate()
         Bbutton.draw(self.win)
+        Bbutton.activate()
         Rbutton.draw(self.win)
+        Rbutton.activate()
         Qbutton.draw(self.win)
+        Qbutton.activate()
 
         while True:
             pt = self.win.getMouse()
 
             if Nbutton.clicked(pt):
-                return Knight
+                p = Knight
             elif Bbutton.clicked(pt):
-                return Bishop
+                p = Bishop
             elif Rbutton.clicked(pt):
-                return Rook
+                p = Rook
             elif Qbutton.clicked(pt):
-                return Queen
+                p = Queen
+
+        Nbutton.undraw()
+        Bbutton.undraw()
+        Rbutton.undraw()
+        Qbutton.undraw()
+        prompt.undraw()
+
+        return p
 
     def close(self):
         self.win.close()
-        
