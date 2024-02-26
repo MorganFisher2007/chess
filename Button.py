@@ -5,24 +5,28 @@ class Button:
     # constructor method
     def __init__(self, center, width, height, label, color):
         # creating instance variables with normal parameters
+        self.center = center
         self.width = width
         self.height = height
-        self.label = Text(center, label)
+        self.label = Text(self.center, label)
         self.color = color
 
         # finding the endpoints of a button rectangle using center and width
-        self.p1 = Point(center.getX() - width/2, center.getY() - height/2)
-        self.p2 = Point(center.getX() + width/2, center.getY() + height/2)
+        self.p1 = Point(self.center.getX() - width/2, self.center.getY() - height/2)
+        self.p2 = Point(self.center.getX() + width/2, self.center.getY() + height/2)
 
         # creating rectangle instance variable with self.p1 and self.p2
         self.outline = Rectangle(self.p1, self.p2)
 
+        self.img = ""
         self.deactivate()
 
     def draw(self, win):
         "draws button"
         self.outline.draw(win)
         self.label.draw(win)
+        if self.img:
+            self.img_obj.draw(win)
 
     def undraw(self):
         "undraws button"
@@ -79,3 +83,9 @@ class Button:
 
     def getFill(self):
         return self.color
+
+    def setIMG(self, img_file):
+        self.img = True
+        self.img_obj = Image(self.center, img_file)
+
+    
