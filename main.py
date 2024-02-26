@@ -59,6 +59,8 @@ def main():
         square.set_piece(b_pieces[8+i])
 
     # Drawing everything
+    win.draw_inst("Welcome to Chess!")
+    win.draw_rest()
     win.draw_squares(board)
 
     for w_piece in w_pieces:
@@ -66,9 +68,6 @@ def main():
 
     for b_piece in b_pieces:
         win.draw_piece(b_piece)
-
-    win.draw_inst("Welcome to Chess!")
-    win.draw_rest()
 
     # Actual gameplay
     turn = 'w'
@@ -113,14 +112,20 @@ def main():
                     f = win.find_square(pt2, board)
 
                     if f in moves:
-                        i.move(f.getX(), f.getY(), board)
                         win.undraw_piece(i)
+                        i.move(f.getX(), f.getY(), board)
+                        if board.check_promote() != False:
+                            ox = board.check_promote().getX()
+                            oy = board.check_promote().getY()
+                            prompt_piece = win.ask_promote(i)
+                            board.promote(prompt_piece)
+                            i = board.interrogate(ox, oy)
                         win.draw_piece(i)
                         win.change_sqr_color(moves, "PaleGreen4",
                                              "light goldenrod yellow")
-
-                        win.set_inst(str(i) + " moved to " + str(f))
                         
+                        win.set_inst(str(i) + " moved to " + str(f.inst_str()))
+
                         cont = False    
                         break
 
@@ -135,12 +140,8 @@ def main():
 
         while True:
             pt3 = win.getMouse()
-
-            if win.check_quit(pt3):
-                win.close()
-                return
             
-            elif win.check_clock(pt3):
+            if win.check_clock(pt3):
                 time2 = time.strftime("%H:%M:%S")
                 if turn == 'w':
                     win.switch_clock()
@@ -149,11 +150,18 @@ def main():
                     win.switch_clock()
                     win.update_clock('b', b_time1, time2)
                 break
+
+            elif win.check_quit(pt3):
+                win.close()
+                return
         
         if turn == 'b':
             turn = 'w'
+            print(board.checkcheck())
         elif turn == 'w':
+            print(board.checkcheck())
             turn = 'b'
+        
 
 
 main()
