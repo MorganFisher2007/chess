@@ -1,4 +1,5 @@
 from Board import *
+import copy
 
 class Piece():
     def __init__(self, color, x: int, y: int):
@@ -7,16 +8,23 @@ class Piece():
         self.y = y
         self.img_file = ""
         
-    def legal_move(self, dx, dy, board):
+    def legal_move(self, dx, dy, board, check = True):
+        #check = False
         m = board.get_square(self.x+dx, self.y+dy)
         if m:
             piece = m.get_piece()
             if piece != None:
                 if piece.get_color() != self.color:
+                    if check:
+                        if board.lead_check(self, m) != False:
+                            return None, True
                     return m, False
                 else:
                     return None, False
             else:
+                if check:
+                    if board.lead_check(self, m) != False:
+                        return None, True
                 return m, True
         else:
             return None, False
@@ -45,10 +53,17 @@ class Piece():
     
     def move(self, x, y, board):
         board.get_square(self.x, self.y).clear()
+        self.prev_x = self.x
+        self.prev_y = self.y
         self.x = x
         self.y = y
         board.get_square(x, y).set_piece(self)
-
+    
+    '''def undo_move(self, board):
+        board.get_square(self.x, self.y).clear()
+        self.x = self.prev_x
+        self.y = self.prev_y
+        board.get_square(self.x, self.y).set_piece(self)'''
     
 class Pawn(Piece):
     def __init__(self, color, x, y):
@@ -62,7 +77,7 @@ class Pawn(Piece):
     def __str__(self):
         return self.color + 'P'
 
-    def legal_moves(self, board):
+    def legal_moves(self, board, check = True):
         moves = []
         
         if self.color == "b":
@@ -127,12 +142,12 @@ class Bishop(Piece):
     def __str__(self):
         return self.color + 'B'
 
-    def legal_moves(self, board):
+    def legal_moves(self, board, check = True):
         moves = []
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(i, i, board)
+            move, active = super().legal_move(i, i, board, check)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -140,7 +155,7 @@ class Bishop(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(-i, i, board)
+            move, active = super().legal_move(-i, i, board, check)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -148,7 +163,7 @@ class Bishop(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(i, -i, board)
+            move, active = super().legal_move(i, -i, board, check)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -156,7 +171,7 @@ class Bishop(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(-i, -i, board)
+            move, active = super().legal_move(-i, -i, board, check)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -175,12 +190,12 @@ class Rook(Piece):
     def __str__(self):
         return self.color + 'R'
 
-    def legal_moves(self, board):
+    def legal_moves(self, board, check = True):
         moves = []
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(0, i, board)
+            move, active = super().legal_move(0, i, board, check)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -188,7 +203,7 @@ class Rook(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(0, -i, board)
+            move, active = super().legal_move(0, -i, board, check)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -196,7 +211,7 @@ class Rook(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(i, 0, board)
+            move, active = super().legal_move(i, 0, board, check)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -204,7 +219,7 @@ class Rook(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(-i, 0, board)
+            move, active = super().legal_move(-i, 0, board, check)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -223,16 +238,16 @@ class Knight(Piece):
     def __str__(self):
         return self.color + 'N'
 
-    def legal_moves(self, board):
+    def legal_moves(self, board, check = True):
         moves = []
-        moves.append(super().legal_move(1, 2, board)[0])
-        moves.append(super().legal_move(-1, 2, board)[0])   
-        moves.append(super().legal_move(-1, -2, board)[0])      
-        moves.append(super().legal_move(1, -2, board)[0])
-        moves.append(super().legal_move(2, 1, board)[0])
-        moves.append(super().legal_move(-2, 1, board)[0])   
-        moves.append(super().legal_move(-2, -1, board)[0])      
-        moves.append(super().legal_move(2, -1, board)[0])
+        moves.append(super().legal_move(1, 2, board, check)[0])
+        moves.append(super().legal_move(-1, 2, board, check)[0])   
+        moves.append(super().legal_move(-1, -2, board, check)[0])      
+        moves.append(super().legal_move(1, -2, board, check)[0])
+        moves.append(super().legal_move(2, 1, board, check)[0])
+        moves.append(super().legal_move(-2, 1, board, check)[0])   
+        moves.append(super().legal_move(-2, -1, board, check)[0])      
+        moves.append(super().legal_move(2, -1, board, check)[0])
         moves = [move for move in moves if move != None]
         return moves
 
@@ -250,10 +265,10 @@ class Queen(Piece):
     def __str__(self):
         return self.color + 'Q'
 
-    def legal_moves(self, board):
+    def legal_moves(self, board, check = True):
         self.v.setPos(self.x, self.y)
         self.d.setPos(self.x, self.y)
-        return self.v.legal_moves(board) + self.d.legal_moves(board)
+        return self.v.legal_moves(board, check) + self.d.legal_moves(board, check)
 
 class King(Piece):
     def __init__(self, color, x, y):
@@ -267,15 +282,15 @@ class King(Piece):
     def __str__(self):
         return self.color + 'K'
 
-    def legal_moves(self, board):
+    def legal_moves(self, board, check = True):
         moves = []
-        moves.append(super().legal_move(1, 0, board)[0])
-        moves.append(super().legal_move(1, 1, board)[0])
-        moves.append(super().legal_move(1, -1, board)[0])
-        moves.append(super().legal_move(-1, 0, board)[0])
-        moves.append(super().legal_move(-1, 1, board)[0])
-        moves.append(super().legal_move(-1, -1, board)[0])
-        moves.append(super().legal_move(0, 1, board)[0])
-        moves.append(super().legal_move(0, -1, board)[0])
+        moves.append(super().legal_move(1, 0, board, check)[0])
+        moves.append(super().legal_move(1, 1, board, check)[0])
+        moves.append(super().legal_move(1, -1, board, check)[0])
+        moves.append(super().legal_move(-1, 0, board, check)[0])
+        moves.append(super().legal_move(-1, 1, board, check)[0])
+        moves.append(super().legal_move(-1, -1, board, check)[0])
+        moves.append(super().legal_move(0, 1, board, check)[0])
+        moves.append(super().legal_move(0, -1, board, check)[0])
         moves = [move for move in moves if move != None]
         return moves
