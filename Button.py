@@ -18,7 +18,7 @@ class Button:
         # creating rectangle instance variable with self.p1 and self.p2
         self.outline = Rectangle(self.p1, self.p2)
 
-        self.img = 
+        self.img = False
         self.deactivate()
 
     def draw(self, win):
