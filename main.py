@@ -162,6 +162,4 @@ def main():
             print(board.checkcheck())
             turn = 'b'
         
-
-
 main()
