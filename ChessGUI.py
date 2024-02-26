@@ -246,12 +246,16 @@ class ChessGUI:
 
             if Nbutton.clicked(pt):
                 p = Knight
+                break
             elif Bbutton.clicked(pt):
                 p = Bishop
+                break
             elif Rbutton.clicked(pt):
                 p = Rook
+                break
             elif Qbutton.clicked(pt):
                 p = Queen
+                break
 
         Nbutton.undraw()
         Bbutton.undraw()
