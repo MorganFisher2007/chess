@@ -202,7 +202,7 @@ class ChessGUI:
                 self.clock1.draw(self.win, time)
                 self.clock1.set_time(str(time))
 
-                return False
+                return False, None
             
             else:
                 time = "0000"
