@@ -6,6 +6,7 @@ class Clock:
         self.side = side
 
     def draw(self, win, time):
+        "draws digits on clock"
         self.time = time
 
         digit1 = time[0]
@@ -15,11 +16,14 @@ class Clock:
 
         digits = [digit1, digit2, digit3, digit4]
 
+        # Finding where to put the digits
         if self.side == 'w':
             y = 245
         else:
             y = 465
 
+        # b is used to create some separation between the colon and digits
+        # i is used to change the height of each digit
         b = 0
         i = 0
         for digit in digits:
@@ -61,7 +65,8 @@ class Clock:
             self.txt5.draw(win)
             self.txt6.draw(win)
             self.txt7.draw(win)
-            
+
+            # Coloring out some "dashes" to make the digits appear
             if int(digit) == 0:
                 self.txt6.setTextColor("grey50")
                 
@@ -120,6 +125,7 @@ class Clock:
         return self.time
 
     def undraw(self):
+        "undraws digits"
         self.txt1.undraw()
         self.txt2.undraw()
         self.txt3.undraw()
