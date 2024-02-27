@@ -14,10 +14,10 @@ class Piece():
             piece = m.get_piece()
             if piece != None:
                 if piece.get_color() != self.color:
-                    if care_check:
-                        p = self.move(m.getX(), m.getY(), board)
+                    if care_check: # make sure when we call legal_moves from checkcheck we don't get into recursive loop
+                        p = self.move(m.getX(), m.getY(), board) # executing move 
                         check = board.checkcheck()
-                        self.undo_move(p, board)
+                        self.undo_move(p, board) # undoing move so board state is not changed
                         if check != False:
                             if self.color in check:
                                 return None, True
@@ -59,20 +59,20 @@ class Piece():
         return self.img_obj
     
     def move(self, x, y, board):
-        board.get_square(self.x, self.y).clear()
+        board.get_square(self.x, self.y).clear() # clearing previous piece location
         self.prev_x = self.x
         self.prev_y = self.y
-        self.x = x
+        self.x = x # updating coords
         self.y = y
         return board.get_square(x, y).set_piece(self)
     
-    def undo_move(self, piece, board):
+    def undo_move(self, piece, board): # takes piece as input to restore possible previous captured piece
         board.get_square(self.x, self.y).clear()
         if isinstance(piece, Piece):
             board.get_square(self.x, self.y).set_piece(piece)
         self.x = self.prev_x
         self.y = self.prev_y
-        board.get_square(self.x, self.y).set_piece(self)
+        board.get_square(self.x, self.y).set_piece(self) # moving piece back
     
 class Pawn(Piece):
     def __init__(self, color, x, y):
@@ -84,6 +84,7 @@ class Pawn(Piece):
             self.img_file = "wP.png"
     
     def __str__(self):
+        "string representation for nogui main"
         return self.color + 'P'
 
     def legal_moves(self, board, check = True):
@@ -159,6 +160,7 @@ class Bishop(Piece):
             self.img_file = "wB.png"
     
     def __str__(self):
+        "string representation for nogui main"
         return self.color + 'B'
 
     def legal_moves(self, board, check = True):
@@ -166,7 +168,15 @@ class Bishop(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(i, i, board, check)
+            move, active = super().legal_move(i, i, board, check) # increment i, i for diagnal pattern of bishop (right, up)
+            if move != None:
+                moves.append(move)
+            if active == False: # break loop if piece gets in way
+                break
+        i = 0
+        while True:
+            i += 1
+            move, active = super().legal_move(-i, i, board, check) # increment -i, i for diagnal pattern of bishop (left, up)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -174,7 +184,7 @@ class Bishop(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(-i, i, board, check)
+            move, active = super().legal_move(i, -i, board, check) # increment i, -i for diagnal pattern of bishop (right, down)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -182,15 +192,7 @@ class Bishop(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(i, -i, board, check)
-            if move != None:
-                moves.append(move)
-            if active == False:
-                break
-        i = 0
-        while True:
-            i += 1
-            move, active = super().legal_move(-i, -i, board, check)
+            move, active = super().legal_move(-i, -i, board, check) # increment -i, -i for diagnal pattern of bishop (left, down)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -207,6 +209,7 @@ class Rook(Piece):
             self.img_file = "wR.png"
     
     def __str__(self):
+        "string representation for nogui main"
         return self.color + 'R'
 
     def legal_moves(self, board, check = True):
@@ -214,7 +217,7 @@ class Rook(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(0, i, board, check)
+            move, active = super().legal_move(0, i, board, check) # increment 0, i for straight pattern of rook (no change, up)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -222,7 +225,7 @@ class Rook(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(0, -i, board, check)
+            move, active = super().legal_move(0, -i, board, check) # increment 0, -i for straight pattern of rook (no change, down)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -230,7 +233,7 @@ class Rook(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(i, 0, board, check)
+            move, active = super().legal_move(i, 0, board, check) # increment i, 0 for straight pattern of rook (right, no change)
             if move != None:
                 moves.append(move)
             if active == False:
@@ -238,13 +241,11 @@ class Rook(Piece):
         i = 0
         while True:
             i += 1
-            move, active = super().legal_move(-i, 0, board, check)
+            move, active = super().legal_move(-i, 0, board, check) # increment -i, 0 for straight pattern of rook (left, no change)
             if move != None:
                 moves.append(move)
             if active == False:
                 break
-        '''if check == True:
-            print(moves)'''
         return moves
 
 class Knight(Piece):
@@ -257,11 +258,12 @@ class Knight(Piece):
             self.img_file = "wN.png"
     
     def __str__(self):
+        "string representation for nogui main"
         return self.color + 'N'
 
     def legal_moves(self, board, check = True):
         moves = []
-        moves.append(super().legal_move(1, 2, board, check)[0])
+        moves.append(super().legal_move(1, 2, board, check)[0]) # checking each move case individually
         moves.append(super().legal_move(-1, 2, board, check)[0])   
         moves.append(super().legal_move(-1, -2, board, check)[0])      
         moves.append(super().legal_move(1, -2, board, check)[0])
@@ -282,9 +284,10 @@ class Queen(Piece):
             self.img_file = "wQ.png"
     
     def __str__(self):
+        "string representation for nogui main"
         return self.color + 'Q'
 
-    def legal_moves(self, board, check = True):
+    def legal_moves(self, board, check = True): # move logic is combination of bishop and rook
         moves = []
         i = 0
         while True:
@@ -364,11 +367,12 @@ class King(Piece):
             self.img_file = "wK.png"
     
     def __str__(self):
+        "string representation for nogui main"
         return self.color + 'K'
 
     def legal_moves(self, board, check = True):
         moves = []
-        moves.append(super().legal_move(1, 0, board, check)[0])
+        moves.append(super().legal_move(1, 0, board, check)[0]) # checking each case manually
         moves.append(super().legal_move(1, 1, board, check)[0])
         moves.append(super().legal_move(1, -1, board, check)[0])
         moves.append(super().legal_move(-1, 0, board, check)[0])
