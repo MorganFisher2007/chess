@@ -8,7 +8,9 @@ class Piece():
         self.y = y
         self.img_file = ""
         
-    def legal_move(self, dx, dy, board, care_check = True):
+    def legal_move(self, dx, dy, board, care_check = True): 
+        '''handles aspects of move checking that are the same for each type of piece. 
+        For example, not moving outside the board & not putting yourself in check.'''
         m = board.get_square(self.x+dx, self.y+dy)
         if m:
             piece = m.get_piece()
@@ -90,7 +92,7 @@ class Pawn(Piece):
     def legal_moves(self, board, check = True):
         moves = []
         
-        if self.color == "b":
+        if self.color == "b": # handles each move case. Doesn't use piece.legal_moves because it has different moves depending on if it can capture
             p = board.interrogate(self.x, self.y - 1)
             if p == None:
                 square = board.get_square(self.x, self.y - 1)
