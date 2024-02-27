@@ -193,27 +193,49 @@ class ChessGUI:
             
             sec_time = int(self.clock1.get_time()) - (sec2 - sec1)
             
-            mins = sec_time // 60
-            secs = sec_time % 60
-            time = str(mins) + str(secs)
-            time = "0" * abs(len(time) - 4) + time
+            if sec_time > 0:
+                mins = sec_time // 60
+                secs = sec_time % 60
+                time = str(mins) + str(secs)
+                time = "0" * abs(len(time) - 4) + time
+                
+                self.clock1.draw(self.win, time)
+                self.clock1.set_time(str(time))
+
+                return False
             
-            self.clock1.draw(self.win, time)
-            self.clock1.set_time(str(time))
+            else:
+                time = "0000"
+                
+                self.clock1.draw(self.win, time)
+                self.clock1.set_time(str(time))
+                
+                return True, "b"
 
         elif side == 'b':
             sec1 = int(time1[0:2]) * 3600 + int(time1[3:5]) * 60 + int(time1[6:8])
             sec2 = int(time2[0:2]) * 3600 + int(time2[3:5]) * 60 + int(time2[6:8])
             
             sec_time = int(self.clock2.get_time()) - (sec2 - sec1)
-            
-            mins = sec_time // 60
-            secs = sec_time % 60
-            time = str(mins) + str(secs)
-            time = "0" * abs(len(time) - 4) + time
-            
-            self.clock2.draw(self.win, time)
-            self.clock2.set_time(str(time))
+
+            if sec_time > 0:
+                mins = sec_time // 60
+                secs = sec_time % 60
+                time = str(mins) + str(secs)
+                time = "0" * abs(len(time) - 4) + time
+                
+                self.clock2.draw(self.win, time)
+                self.clock2.set_time(str(time))
+
+                return False, None
+
+            else:
+                time = "0000"
+                
+                self.clock2.draw(self.win, time)
+                self.clock2.set_time(str(time))
+                
+                return True, "w"
 
     def change_sqr_color(self, squares, color1, color2):
         for square in squares:
