@@ -131,21 +131,24 @@ class Board():
                 wKing = piece
             elif str(piece) == 'bK':
                 bKing = piece
-        if self.checkcheck() == 'w':
+        cc = self.checkcheck()
+        if cc == False:
+            return False
+        if 'w' in cc:
             for m in wKing.legal_moves(self):
                 p = wKing.move(m.getX(), m.getY(), self)
                 c = self.checkcheck()
                 wKing.undo_move(p, self)
-                if c != 'w':
+                if 'w' not in c:
                     return False
             return True
         
-        elif self.checkcheck() == 'b':
+        elif 'b' in cc:
             for m in wKing.legal_moves(self):
                 p = wKing.move(m.getX(), m.getY(), self)
                 c = self.checkcheck()
                 wKing.undo_move(p, self)
-                if c != 'b':
+                if 'b' not in c:
                     return False
             return True
         return False
