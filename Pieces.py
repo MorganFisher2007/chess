@@ -18,8 +18,9 @@ class Piece():
                         p = self.move(m.getX(), m.getY(), board)
                         check = board.checkcheck()
                         self.undo_move(p, board)
-                        if check == self.color:
-                            return None, True
+                        if check != False:
+                            if self.color in check:
+                                return None, True
                     return m, False
                 else:
                     return None, False
@@ -28,15 +29,16 @@ class Piece():
                     p = self.move(m.getX(), m.getY(), board)
                     check = board.checkcheck()
                     self.undo_move(p, board)
-                    if check == self.color:
-                        return None, True
+                    if check != False:
+                        if self.color in check:
+                            return None, True
                 return m, True
         else:
             return None, False
 
     def get_color(self):
         return self.color
-    # maybe we should standardize camelCase vs underscore in method naming (also in Board.py)
+ 
     def getX(self):
         return self.x
     
@@ -138,10 +140,11 @@ class Pawn(Piece):
             rem = []
             for move in moves:
                 p = self.move(move.getX(), move.getY(), board)
-                check = board.checkcheck()
+                c = board.checkcheck()
                 self.undo_move(p, board)
-                if check == self.color:
-                    rem.append(move)
+                if c != False:
+                    if self.color in c:
+                        rem.append(move)
             for m in rem:
                 moves.remove(m)
         return moves
@@ -286,7 +289,10 @@ class Queen(Piece):
     def legal_moves(self, board, check = True):
         self.v.setPos(self.x, self.y)
         self.d.setPos(self.x, self.y)
-        return self.v.legal_moves(board, check) + self.d.legal_moves(board, check)
+        out = self.v.legal_moves(board, check) + self.d.legal_moves(board, check)
+        if check == True:
+            print(out)
+        return out
 
 class King(Piece):
     def __init__(self, color, x, y):
