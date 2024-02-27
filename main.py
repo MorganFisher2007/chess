@@ -165,10 +165,10 @@ def main():
                         time2 = time.strftime("%H:%M:%S")
                         if turn == 'w':
                             win.switch_clock()
-                            win.update_clock('w', w_time1, time2)
+                            game_done, winner = win.update_clock('w', w_time1, time2)
                         else:
                             win.switch_clock()
-                            win.update_clock('b', b_time1, time2)
+                            game_done, winner = win.update_clock('b', b_time1, time2)
                         break
 
                     elif win.check_quit(pt3):
@@ -189,6 +189,11 @@ def main():
                         break
             
                 if game_done:
+                    if not board.checkmate():
+                        if winner == 'b':
+                            win.set_inst("Time ran out. Black won.")
+                        else:
+                            win.set_inst("Time ran out. White won.")
                     break
 
             win.change_start(True)
