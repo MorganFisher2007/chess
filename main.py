@@ -109,6 +109,8 @@ def main():
                     elif pt1.getX() >= 550 and pt1.getX() <= 1350:
                         if pt1.getY() >= 45 and pt1.getY() <= 845:
                             sqr = win.find_square(pt1, board)
+                            if type(sqr) != Square:
+                                continue
                             i = board.interrogate(sqr.getX(), sqr.getY())
 
                             if i and i.color == turn:
@@ -130,7 +132,8 @@ def main():
                     elif pt2.getX() >= 550 and pt2.getX() <= 1350:
                         if pt2.getY() >= 45 and pt2.getY() <= 845:
                             f = win.find_square(pt2, board)
-
+                            if type(f) != Square:
+                                continue
                             if f in moves:
                                 win.undraw_piece(i)
                                 i.move(f.getX(), f.getY(), board)
