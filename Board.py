@@ -2,6 +2,7 @@ from Pieces import *
 import copy
 
 class Square():
+    "has a location, and can hold a piece"
     def __init__(self, x, y, piece = None):
         self.x = x
         self.y = y
