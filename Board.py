@@ -42,6 +42,7 @@ class Board():
                 self.state.append(Square(i, j))
     
     def __str__(self):
+        "string representation for nogui main"
         out = ''
         squares = []
         for j in range(8):
@@ -55,33 +56,7 @@ class Board():
     
         return out
         
-    def copy_state(self):
-        new_state = []
-        for j in range(1, 9):
-            for i in range(1, 9):
-                sqr = Square(i, j)
-                new_state.append(sqr)
-                p = self.get_square(i, j).get_piece()
-                if p != None:
-                    if type(p) == Pawn:
-                        ghostp = Pawn(p.color, p.getX(), p.getY())
-                    elif type(p) == Rook:
-                        ghostp = Rook(p.color, p.getX(), p.getY())
-                    elif type(p) == Bishop:
-                        ghostp = Bishop(p.color, p.getX(), p.getY())
-                    elif type(p) == Knight:
-                        ghostp = Knight(p.color, p.getX(), p.getY())
-                    elif type(p) == Queen:
-                        ghostp = Pawn(p.color, p.getX(), p.getY())
-                    elif type(p) == King:
-                        ghostp = King(p.color, p.getX(), p.getY())
-                
-                if ghostp != None:
-                    sqr.set_piece(ghostp)
-        
-        return new_state
-
-    def interrogate(self, x, y):
+    def interrogate(self, x, y): # directly returns piece from coords, bypassing having to access the square
         if x > 8 or x < 1 or y < 1 or y > 8:
             return False
         else:
@@ -111,8 +86,8 @@ class Board():
             piece = square.get_piece()
             if piece == None:
                 continue
-            if piece.color == 'w':
-                for move in piece.legal_moves(self, False):
+            if piece.color == 'w': # loop through all pieces of given color
+                for move in piece.legal_moves(self, False): # if the piece can capture king on next move, it is check
                     if move == bKing:
                         out += 'b'
             else:
@@ -125,35 +100,42 @@ class Board():
             return out
 
     def checkmate(self):
+        p = []
+        cc = self.checkcheck()
         for square in self.state:
             piece = square.get_piece()
-            if str(piece) == 'wK':
-                wKing = piece
-            elif str(piece) == 'bK':
-                bKing = piece
-        cc = self.checkcheck()
+            if isinstance(piece, Piece):
+                p.append(piece)
         if cc == False:
             return False
-        if 'w' in cc:
-            for m in wKing.legal_moves(self):
-                p = wKing.move(m.getX(), m.getY(), self)
-                c = self.checkcheck()
-                wKing.undo_move(p, self)
-                if 'w' not in c:
-                    return False
+        if 'w' in cc: # king must be in check for checkmate
+            for piece in p:
+                if piece.color == 'w':
+                    for m in piece.legal_moves(self): # if no moves are possible, it is checkmate
+                        p = piece.move(m.getX(), m.getY(), self)
+                        c = self.checkcheck()
+                        piece.undo_move(p, self)
+                        if c == False:
+                            return False
+                        if 'w' not in c:
+                            return False
             return True
         
         elif 'b' in cc:
-            for m in wKing.legal_moves(self):
-                p = wKing.move(m.getX(), m.getY(), self)
-                c = self.checkcheck()
-                wKing.undo_move(p, self)
-                if 'b' not in c:
-                    return False
+            for piece in p:
+                if piece.color == 'b':
+                    for m in piece.legal_moves(self):
+                        p = piece.move(m.getX(), m.getY(), self)
+                        c = self.checkcheck()
+                        piece.undo_move(p, self)
+                        if c == False:
+                            return False
+                        if 'b' not in c:
+                            return False
             return True
         return False
     
-    def check_promote(self):
+    def check_promote(self): # checks if a pawn is on the 8th or 1st rank, and if so returns the piece to be promoted
         for square in self.state:
             piece = square.get_piece()
             if type(piece) == Pawn:
@@ -161,7 +143,7 @@ class Board():
                     return piece
         return False
     
-    def promote(self, Piece):
+    def promote(self, Piece): # replaces pawn with chosen piece
         piece = self.check_promote()
         x = piece.getX()
         y = piece.getY()
@@ -169,18 +151,3 @@ class Board():
         square = self.get_square(x, y)
         square.clear()
         square.set_piece(Piece(color, x, y))
-    
-    '''def lead_check(self, piece, move):
-        x = piece.getX()
-        y = piece.getY()
-        piece.move(move.getX(), move.getY(), self)
-        out = self.checkcheck()
-        self.state = old_state
-        return out'''
-    
-    def remove_images(self):
-        '''for square in self.state:
-            piece = square.get_piece()
-            piece.img_file = None
-            piece.obj = None'''
-        pass
