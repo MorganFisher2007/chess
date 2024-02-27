@@ -8,22 +8,27 @@ class Piece():
         self.y = y
         self.img_file = ""
         
-    def legal_move(self, dx, dy, board, check = True):
-        #check = False
+    def legal_move(self, dx, dy, board, care_check = True):
         m = board.get_square(self.x+dx, self.y+dy)
         if m:
             piece = m.get_piece()
             if piece != None:
                 if piece.get_color() != self.color:
-                    if check:
-                        if board.lead_check(self, m) != False:
+                    if care_check:
+                        p = self.move(m.getX(), m.getY(), board)
+                        check = board.checkcheck()
+                        self.undo_move(p, board)
+                        if check == self.color:
                             return None, True
                     return m, False
                 else:
                     return None, False
             else:
-                if check:
-                    if board.lead_check(self, m) != False:
+                if care_check:
+                    p = self.move(m.getX(), m.getY(), board)
+                    check = board.checkcheck()
+                    self.undo_move(p, board)
+                    if check == self.color:
                         return None, True
                 return m, True
         else:
@@ -57,13 +62,15 @@ class Piece():
         self.prev_y = self.y
         self.x = x
         self.y = y
-        board.get_square(x, y).set_piece(self)
+        return board.get_square(x, y).set_piece(self)
     
-    '''def undo_move(self, board):
+    def undo_move(self, piece, board):
         board.get_square(self.x, self.y).clear()
+        if isinstance(piece, Piece):
+            board.get_square(self.x, self.y).set_piece(piece)
         self.x = self.prev_x
         self.y = self.prev_y
-        board.get_square(self.x, self.y).set_piece(self)'''
+        board.get_square(self.x, self.y).set_piece(self)
     
 class Pawn(Piece):
     def __init__(self, color, x, y):
@@ -127,7 +134,16 @@ class Pawn(Piece):
                 if p.get_color() == "b":
                     square = board.get_square(self.x - 1, self.y + 1)
                     moves.append(square)
-            
+        if check:
+            rem = []
+            for move in moves:
+                p = self.move(move.getX(), move.getY(), board)
+                check = board.checkcheck()
+                self.undo_move(p, board)
+                if check == self.color:
+                    rem.append(move)
+            for m in rem:
+                moves.remove(m)
         return moves
 
 class Bishop(Piece):
@@ -224,6 +240,8 @@ class Rook(Piece):
                 moves.append(move)
             if active == False:
                 break
+        '''if check == True:
+            print(moves)'''
         return moves
 
 class Knight(Piece):
