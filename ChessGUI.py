@@ -3,20 +3,17 @@ from Pieces import *
 from Button import Button
 from Clock import Clock
 
-#from screeninfo import get_monitors
-
 class ChessGUI:
     def __init__(self):
-        #for m in get_monitors():
-            #self.width = m.width
-            #self.height = m.height
         self.win = GraphWin("Chess", 1470, 890, autoflush = False)
         self.win.setCoords(0, 0, 1470 - 1, 890 - 1)
         self.win.setBackground("grey16")
 
+        # list of drawn stuff (so I can undraw later)
         self.drawn_list = []
 
     def draw_piece(self, piece):
+        "draws given piece"
         x = piece.getX() * 100 + 498
         y = piece.getY() * 100 - 5
         IMG_file = piece.getIMG_file()
@@ -27,11 +24,13 @@ class ChessGUI:
         self.drawn_list.append(IMG)
 
     def undraw_piece(self, piece):
+        "undraws given piece"
         IMG = piece.getIMG_obj()
         IMG.undraw()
         self.drawn_list.remove(IMG)
 
     def draw_squares(self, board):
+        "draw squares"
         for square in board.state:
             x = square.getX() * 100 + 500
             y = square.getY() * 100 - 5
@@ -54,6 +53,7 @@ class ChessGUI:
             self.drawn_list.append(sqr)
     
     def draw_rest(self):
+        "draws clock, board letters/numbers, buttons"
         letters = ["a", "b", "c", "c", "e", "f", "g", "h"]
 
         for i in range(1, 9):
@@ -129,6 +129,7 @@ class ChessGUI:
         self.drawn_list.append(self.lin2)
 
     def draw_inst(self, text):
+        "draw instructions"
         self.inst = Text(Point(270, 115), text)
         self.inst.setTextColor("white")
         self.inst.setSize(20)
@@ -142,6 +143,7 @@ class ChessGUI:
         return self.win.getMouse()
 
     def find_square(self, pt, board):
+        "returns square that matches the point clicked"
         for square in board.state:
             x = square.getX() * 100 + 500
             y = square.getY() * 100 - 5
@@ -157,6 +159,7 @@ class ChessGUI:
         return self.start_button.clicked(pt)
 
     def change_start(self, activate, text="Play Again"):
+        "changes text of start button"
         if activate:
             self.start_button.activate()
         else:
@@ -165,10 +168,12 @@ class ChessGUI:
         self.start_button.setLabel(text)
 
     def check_clock(self, pt):
+        "checks if clock has been clicked"
         if self.click1.clicked(pt) or self.click2.clicked(pt):
             return True
 
     def switch_clock(self):
+        "changes clock button colors"
         if self.click1.getFill() == "grey12":
             self.click1.setFill("grey20")
         else:
@@ -187,13 +192,17 @@ class ChessGUI:
         self.click2.activate()
 
     def update_clock(self, side, time1, time2):
+        "updates clock given two timestamps
         if side == 'w':
+            # converts given time stamp into seconds
             sec1 = int(time1[0:2]) * 3600 + int(time1[3:5]) * 60 + int(time1[6:8])
             sec2 = int(time2[0:2]) * 3600 + int(time2[3:5]) * 60 + int(time2[6:8])
             
             sec_time = int(self.clock1.get_time()) - (sec2 - sec1)
             
             if sec_time > 0:
+                # converting sec_time into string of four numbers in minute-second
+                # form
                 mins = sec_time // 60
                 secs = sec_time % 60
                 time = str(mins) + str(secs)
@@ -201,15 +210,18 @@ class ChessGUI:
                 
                 self.clock1.draw(self.win, time)
                 self.clock1.set_time(str(time))
-
+                
+                # time is still going so the game isn't done and there is no
+                # winner
                 return False, None
-            
+
             else:
                 time = "0000"
                 
                 self.clock1.draw(self.win, time)
                 self.clock1.set_time(str(time))
                 
+                # time ran out so the game is done and there's a winner
                 return True, "b"
 
         elif side == 'b':
@@ -238,6 +250,8 @@ class ChessGUI:
                 return True, "w"
 
     def change_sqr_color(self, squares, color1, color2):
+        "changes color of square"
+        # used to go back and forth between being lit up and normal
         for square in squares:
             x = square.getX() * 100 + 500
             y = square.getY() * 100 - 5
@@ -258,12 +272,16 @@ class ChessGUI:
                     
             sqr.draw(self.win)
 
+            # undrawing/redrawing piece (if there is one) so square doesn't
+            # cover it
             p = square.get_piece()
             if p != None:
                 self.undraw_piece(p)
                 self.draw_piece(p)
 
     def ask_promote(self, piece):
+        "creates prompt menu and returns promote piece"
+        # checks where on the board the menu has to be
         x = piece.getX() * 100 + 498
         if piece.getY() == 1:
             y = 100
@@ -273,6 +291,7 @@ class ChessGUI:
         prompt = Rectangle(Point(x - 140, y), Point(x + 140, y))
         prompt.draw(self.win)
 
+        # creating image buttons
         Nbutton = Button(Point(x - 105, y), 70, 70, "", "white")
         Bbutton = Button(Point(x - 35, y), 70, 70, "", "white")
         Rbutton = Button(Point(x + 35, y), 70, 70, "", "white")
@@ -298,6 +317,7 @@ class ChessGUI:
         Qbutton.draw(self.win)
         Qbutton.activate()
 
+        # gets click and sets the chosen piece equal to the class
         while True:
             pt = self.win.getMouse()
 
@@ -323,6 +343,7 @@ class ChessGUI:
         return p
 
     def undraw_all(self):
+        "undraws everything in GUI"
         for item in self.drawn_list:
             item.undraw()
 
