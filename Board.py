@@ -18,9 +18,10 @@ class Square():
         return letters[self.x - 1] + str(self.y)
 
     def set_piece(self, piece):
-        del self.piece
+        out = self.piece
         self.piece = piece
-    
+        return out
+
     def clear(self):
         self.piece = None
         
@@ -127,24 +128,20 @@ class Board():
             elif str(piece) == 'bK':
                 bKing = piece
         if self.checkcheck() == 'w':
-            for move in wKing.legal_moves():
-                tboard = Board()
-                tboard.state = self.copy_state()
-                tboard.remove_images()
-                tking = tboard.interrogate(wKing.getX(), wKing.getY())
-                tking.move(move)
-                if tboard.checkcheck() == False:
+            for m in wKing.legal_moves(self):
+                p = wKing.move(m.getX(), m.getY(), self)
+                c = self.checkcheck()
+                wKing.undo_move(p, self)
+                if c != 'w':
                     return False
             return True
         
         elif self.checkcheck() == 'b':
-            for move in bKing.legal_moves():
-                tboard = Board()
-                tboard.state = self.copy_state()
-                tboard.remove_images()
-                tking = tboard.interrogate(bKing.getX(), bKing.getY())
-                tking.move(move)
-                if tboard.checkcheck() == False:
+            for m in wKing.legal_moves(self):
+                p = wKing.move(m.getX(), m.getY(), self)
+                c = self.checkcheck()
+                wKing.undo_move(p, self)
+                if c != 'b':
                     return False
             return True
         return False
@@ -166,12 +163,13 @@ class Board():
         square.clear()
         square.set_piece(Piece(color, x, y))
     
-    def lead_check(self, piece, move):
-        old_state = self.state
+    '''def lead_check(self, piece, move):
+        x = piece.getX()
+        y = piece.getY()
         piece.move(move.getX(), move.getY(), self)
         out = self.checkcheck()
         self.state = old_state
-        return out
+        return out'''
     
     def remove_images(self):
         '''for square in self.state:
