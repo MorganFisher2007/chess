@@ -67,6 +67,6 @@ def main():
                     print(board)
                     continue
         print(board)
-        print('illegal move, motherfucker!')
+        print('illegal move!')
 
 main()
