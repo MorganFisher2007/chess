@@ -14,6 +14,8 @@ class ChessGUI:
         self.win.setCoords(0, 0, 1470 - 1, 890 - 1)
         self.win.setBackground("grey16")
 
+        self.drawn_list = []
+
     def draw_piece(self, piece):
         x = piece.getX() * 100 + 498
         y = piece.getY() * 100 - 5
@@ -22,10 +24,12 @@ class ChessGUI:
         IMG = Image(Point(x, y), IMG_file)
         piece.setIMG_obj(IMG)
         IMG.draw(self.win)
+        self.drawn_list.append(IMG)
 
     def undraw_piece(self, piece):
         IMG = piece.getIMG_obj()
         IMG.undraw()
+        self.drawn_list.remove(IMG)
 
     def draw_squares(self, board):
         for square in board.state:
@@ -47,6 +51,7 @@ class ChessGUI:
                     sqr.setFill("PaleGreen4")
                         
             sqr.draw(self.win)
+            self.drawn_list.append(sqr)
     
     def draw_rest(self):
         letters = ["a", "b", "c", "c", "e", "f", "g", "h"]
@@ -55,6 +60,7 @@ class ChessGUI:
             txt = Text(Point(1370, i * 100 - 5), str(i))
             txt.setTextColor("white")
             txt.draw(self.win)
+            self.drawn_list.append(txt)
 
         i = 0
         for letter in letters:
@@ -62,54 +68,72 @@ class ChessGUI:
             txt = Text(Point(i * 100 + 500, 860), letter)
             txt.setTextColor("white")
             txt.draw(self.win)
+            self.drawn_list.append(txt)
         
         self.quit_button = Button(Point(100, 825), 90, 40, "Quit", "tomato")
         self.quit_button.setSize(15)
         self.quit_button.activate()
         self.quit_button.draw(self.win)
+        self.drawn_list.append(self.quit_button)
 
-        rect1 = Rectangle(Point(100, 195), Point(250, 695))
-        rect1.setWidth(0)
-        rect1.setFill("sienna")
-        rect1.draw(self.win)
+        self.start_button = Button(Point(450, 825), 90, 40, "Start", "LightBlue1")
+        self.start_button.setSize(15)
+        self.start_button.activate()
+        self.start_button.draw(self.win)
+        self.drawn_list.append(self.start_button)
 
-        rect2 = Rectangle(Point(250, 195), Point(440, 695))
-        rect2.setWidth(0)
-        rect2.setFill("sienna4")
-        rect2.draw(self.win)
+        self.rect1 = Rectangle(Point(100, 195), Point(250, 695))
+        self.rect1.setWidth(0)
+        self.rect1.setFill("sienna")
+        self.rect1.draw(self.win)
+        self.drawn_list.append(self.rect1)
+
+        self.rect2 = Rectangle(Point(250, 195), Point(440, 695))
+        self.rect2.setWidth(0)
+        self.rect2.setFill("sienna4")
+        self.rect2.draw(self.win)
+        self.drawn_list.append(self.rect2)
 
         self.click1 = Button(Point(175, 330), 110, 230, "", "grey20")
         self.click1.activate()
         self.click1.draw(self.win)
+        self.drawn_list.append(self.click1)
 
-        lin1 = Line(Point(120, 445), Point(229, 445))
-        lin1.setWidth(3)
-        lin1.draw(self.win)
+        self.lin1 = Line(Point(120, 445), Point(229, 445))
+        self.lin1.setWidth(3)
+        self.lin1.draw(self.win)
+        self.drawn_list.append(self.lin1)
 
         self.click2 = Button(Point(175, 560), 110, 230, "", "grey12")
         self.click2.activate()
         self.click2.draw(self.win)
+        self.drawn_list.append(self.click2)
 
-        screen = Rectangle(Point(280, 225), Point(410, 665))
-        screen.setWidth(0)
-        screen.setFill("cornsilk4")
-        screen.draw(self.win)
+        self.screen = Rectangle(Point(280, 225), Point(410, 665))
+        self.screen.setWidth(0)
+        self.screen.setFill("cornsilk4")
+        self.screen.draw(self.win)
+        self.drawn_list.append(self.screen)
 
         self.clock1 = Clock('w')
         self.clock1.draw(self.win, "1000")
+        self.drawn_list.append(self.clock1)
 
         self.clock2 = Clock('b')
         self.clock2.draw(self.win, "1000")
+        self.drawn_list.append(self.clock2)
 
-        lin2 = Line(Point(290, 444), Point(400, 444))
-        lin2.setWidth(2)
-        lin2.draw(self.win)
+        self.lin2 = Line(Point(290, 444), Point(400, 444))
+        self.lin2.setWidth(2)
+        self.lin2.draw(self.win)
+        self.drawn_list.append(self.lin2)
 
     def draw_inst(self, text):
         self.inst = Text(Point(270, 115), text)
         self.inst.setTextColor("white")
         self.inst.setSize(20)
         self.inst.draw(self.win)
+        self.drawn_list.append(self.inst)
 
     def set_inst(self, text):
         self.inst.setText(text)
@@ -128,6 +152,17 @@ class ChessGUI:
 
     def check_quit(self, pt):
         return self.quit_button.clicked(pt)
+
+    def check_start(self, pt):
+        return self.start_button.clicked(pt)
+
+    def change_start(self, activate, text="Play Again"):
+        if activate:
+            self.start_button.activate()
+        else:
+            self.start_button.deactivate()
+
+        self.start_button.setLabel(text)
 
     def check_clock(self, pt):
         if self.click1.clicked(pt) or self.click2.clicked(pt):
@@ -264,6 +299,10 @@ class ChessGUI:
         prompt.undraw()
 
         return p
+
+    def undraw_all(self):
+        for item in self.drawn_list:
+            item.undraw()
 
     def close(self):
         self.win.close()
