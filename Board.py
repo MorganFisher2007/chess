@@ -88,12 +88,14 @@ class Board():
                 continue
             if piece.color == 'w': # loop through all pieces of given color
                 for move in piece.legal_moves(self, False): # if the piece can capture king on next move, it is check
-                    if move == bKing:
-                        out += 'b'
+                    if bKing != None:
+                        if move == bKing:
+                            out += 'b'
             else:
                 for move in piece.legal_moves(self, False):
-                    if move == wKing:
-                        out += 'w'
+                    if wKing != None:
+                        if move == wKing:
+                            out += 'w'
         if out == []:
             return False
         else:
