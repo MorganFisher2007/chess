@@ -98,6 +98,7 @@ class Board():
                     return square
     
     def checkcheck(self):
+        out = []
         for square in self.state:
             piece = square.get_piece()
             if piece == None:
@@ -111,14 +112,17 @@ class Board():
             if piece == None:
                 continue
             if piece.color == 'w':
-                for move in piece.legal_moves(self, check = False):
+                for move in piece.legal_moves(self, False):
                     if move == bKing:
-                        return 'b'
+                        out += 'b'
             else:
-                for move in piece.legal_moves(self, check = False):
+                for move in piece.legal_moves(self, False):
                     if move == wKing:
-                        return 'w'
-        return False
+                        out += 'w'
+        if out == []:
+            return False
+        else:
+            return out
 
     def checkmate(self):
         for square in self.state:
