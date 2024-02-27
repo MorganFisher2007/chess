@@ -34,7 +34,7 @@ class Button:
         self.outline.undraw()
         self.label.undraw()
         if self.img:
-            self.img_obj.undraw(win)
+            self.img_obj.undraw()
 
     def activate(self):
         "makes button clickable"
