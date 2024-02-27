@@ -26,91 +26,91 @@ class Clock:
             if i == 2:
                 b = 8
                 
-            txt1 = Text(Point(323, y + i * 46 + b), "––")
-            txt1.setSize(36)
-            txt1.setStyle("bold")
+            self.txt1 = Text(Point(323, y + i * 46 + b), "––")
+            self.txt1.setSize(36)
+            self.txt1.setStyle("bold")
 
-            txt2 = Text(Point(367, y + i * 46 + b), "––")
-            txt2.setSize(36)
-            txt2.setStyle("bold")
+            self.txt2 = Text(Point(367, y + i * 46 + b), "––")
+            self.txt2.setSize(36)
+            self.txt2.setStyle("bold")
 
-            txt3 = Text(Point(323, y + 35 + i * 46 + b), "––")
-            txt3.setSize(36)
-            txt3.setStyle("bold")
+            self.txt3 = Text(Point(323, y + 35 + i * 46 + b), "––")
+            self.txt3.setSize(36)
+            self.txt3.setStyle("bold")
 
-            txt4 = Text(Point(367, y + 35 + i * 46 + b), "––")
-            txt4.setSize(36)
-            txt4.setStyle("bold")
+            self.txt4 = Text(Point(367, y + 35 + i * 46 + b), "––")
+            self.txt4.setSize(36)
+            self.txt4.setStyle("bold")
 
-            txt5 = Text(Point(300, y + 15 + i * 46 + b), "l")
-            txt5.setSize(36)
-            txt5.setStyle("bold")
+            self.txt5 = Text(Point(300, y + 15 + i * 46 + b), "l")
+            self.txt5.setSize(36)
+            self.txt5.setStyle("bold")
 
-            txt6 = Text(Point(345, y + 15 + i * 46 + b), "l")
-            txt6.setSize(36)
-            txt6.setStyle("bold")
+            self.txt6 = Text(Point(345, y + 15 + i * 46 + b), "l")
+            self.txt6.setSize(36)
+            self.txt6.setStyle("bold")
 
-            txt7 = Text(Point(390, y + 15 + i * 46 + b), "l")
-            txt7.setSize(36)
-            txt7.setStyle("bold")
+            self.txt7 = Text(Point(390, y + 15 + i * 46 + b), "l")
+            self.txt7.setSize(36)
+            self.txt7.setStyle("bold")
 
-            txt1.draw(win)
-            txt2.draw(win)
-            txt3.draw(win)
-            txt4.draw(win)
-            txt5.draw(win)
-            txt6.draw(win)
-            txt7.draw(win)
+            self.txt1.draw(win)
+            self.txt2.draw(win)
+            self.txt3.draw(win)
+            self.txt4.draw(win)
+            self.txt5.draw(win)
+            self.txt6.draw(win)
+            self.txt7.draw(win)
             
             if int(digit) == 0:
-                txt6.setTextColor("grey50")
+                self.txt6.setTextColor("grey50")
                 
             if int(digit) == 1:
-                txt1.setTextColor("grey50")
-                txt2.setTextColor("grey50")
-                txt5.setTextColor("grey50")
-                txt6.setTextColor("grey50")
-                txt7.setTextColor("grey50")
+                self.txt1.setTextColor("grey50")
+                self.txt2.setTextColor("grey50")
+                self.txt5.setTextColor("grey50")
+                self.txt6.setTextColor("grey50")
+                self.txt7.setTextColor("grey50")
 
             if int(digit) == 2:
-                txt1.setTextColor("grey50")
-                txt4.setTextColor("grey50")
+                self.txt1.setTextColor("grey50")
+                self.txt4.setTextColor("grey50")
 
             if int(digit) == 3:
-                txt1.setTextColor("grey50")
-                txt2.setTextColor("grey50")
+                self.txt1.setTextColor("grey50")
+                self.txt2.setTextColor("grey50")
 
             if int(digit) == 4:
-                txt2.setTextColor("grey50")
-                txt5.setTextColor("grey50")
-                txt7.setTextColor("grey50")
+                self.txt2.setTextColor("grey50")
+                self.txt5.setTextColor("grey50")
+                self.txt7.setTextColor("grey50")
 
             if int(digit) == 5:
-                txt2.setTextColor("grey50")
-                txt3.setTextColor("grey50")
+                self.txt2.setTextColor("grey50")
+                self.txt3.setTextColor("grey50")
 
             if int(digit) == 6:
-                txt3.setTextColor("grey50")
+                self.txt3.setTextColor("grey50")
 
             if int(digit) == 7:
-                txt1.setTextColor("grey50")
-                txt2.setTextColor("grey50")
-                txt6.setTextColor("grey50")
-                txt7.setTextColor("grey50")
+                self.txt1.setTextColor("grey50")
+                self.txt2.setTextColor("grey50")
+                self.txt6.setTextColor("grey50")
+                self.txt7.setTextColor("grey50")
 
             if int(digit) == 8:
                 pass
 
             if int(digit) == 9:
-                txt2.setTextColor("grey50")
-                txt7.setTextColor("grey50")
+                self.txt2.setTextColor("grey50")
+                self.txt7.setTextColor("grey50")
 
             i += 1
 
-        colon = Text(Point(345, y + 98), ".   .")
-        colon.setSize(36)
-        colon.setStyle("bold")
-        colon.draw(win)
+        self.colon = Text(Point(345, y + 98), ".   .")
+        self.colon.setSize(36)
+        self.colon.setStyle("bold")
+        self.colon.draw(win)
 
     def set_time(self, time):
         self.time = time
@@ -118,3 +118,13 @@ class Clock:
     def get_time(self):
         self.time = int(self.time[0:2]) * 60 + int(self.time[2:4])
         return self.time
+
+    def undraw(self):
+        self.txt1.undraw()
+        self.txt2.undraw()
+        self.txt3.undraw()
+        self.txt4.undraw()
+        self.txt5.undraw()
+        self.txt6.undraw()
+        self.txt7.undraw()
+        self.colon.undraw()
