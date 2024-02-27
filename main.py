@@ -3,6 +3,8 @@ from Pieces import *
 from ChessGUI import *
 import time
 
+#ADD COMMENTS BUDDY
+
 def main():
     win = ChessGUI()
 
@@ -156,10 +158,12 @@ def main():
                 return
         
         if turn == 'b':
+            print(board.checkmate())
             turn = 'w'
-            print(board.checkcheck())
         elif turn == 'w':
-            print(board.checkcheck())
+            print(board.checkmate())
             turn = 'b'
         
+
+
 main()
