@@ -18,7 +18,9 @@ class Button:
         # creating rectangle instance variable with self.p1 and self.p2
         self.outline = Rectangle(self.p1, self.p2)
 
+        # self.img = whether or not button is an image button
         self.img = False
+
         self.deactivate()
 
     def draw(self, win):
@@ -78,15 +80,19 @@ class Button:
         return self.active
 
     def setSize(self, point):
+        "changes text size"
         self.label.setSize(point)
 
     def setFill(self, color):
+        "changes fill color"
         self.color = color
 
     def getFill(self):
+        "returns fill color"
         return self.color
 
     def setIMG(self, img_file):
+        "makes an image button"
         self.img = True
         self.img_obj = Image(self.center, img_file)
         
