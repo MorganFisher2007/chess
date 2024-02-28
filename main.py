@@ -90,14 +90,20 @@ def main():
             cont = False
             game_done = False
             while True:
+                # used for text
+                if board.checkcheck() != False:
+                    check = " (Check)"
+                else:
+                    check = ""
+                    
                 if turn == 'w':
                     if cont == False:
                         w_time1 = time.strftime("%H:%M:%S")
-                        win.set_inst("It is white's move")
+                        win.set_inst("It is white's move" + check)
                 else:
                     if cont == False:
                         b_time1 = time.strftime("%H:%M:%S")
-                        win.set_inst("It is black's move")
+                        win.set_inst("It is black's move" + check)
                     
                 while True:
                     pt1 = win.getMouse()
