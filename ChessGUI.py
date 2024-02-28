@@ -192,7 +192,7 @@ class ChessGUI:
         self.click2.activate()
 
     def update_clock(self, side, time1, time2):
-        "updates clock given two timestamps
+        "updates clock given two timestamps"
         if side == 'w':
             # converts given time stamp into seconds
             sec1 = int(time1[0:2]) * 3600 + int(time1[3:5]) * 60 + int(time1[6:8])
